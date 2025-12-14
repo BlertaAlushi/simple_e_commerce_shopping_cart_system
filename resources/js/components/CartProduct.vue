@@ -16,7 +16,8 @@ async function remove() {
     emit('removeCartProduct', props.cart_product.id);
 }
 const totalPrice = computed(() => {
-    return props.cart_product.quantity * props.cart_product.product.price;
+    const total = props.cart_product.quantity * props.cart_product.product.price;
+    return total.toFixed(2);
 });
 </script>
 
