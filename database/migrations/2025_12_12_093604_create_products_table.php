@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->text('description');
             $table->decimal('price',10,2);
             $table->char('currency',3);
             $table->unsignedInteger('stock_quantity');
+            $table->foreignId('mark_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }
