@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { products } from '@/routes';
 import { type BreadcrumbItem, type Product } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 import ProductC from '@/components/Product.vue';
@@ -9,7 +8,7 @@ import { ref, watch } from 'vue';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Products',
-        href: products().url,
+        href: route('products'),
     },
 ];
 
@@ -27,7 +26,7 @@ const props = defineProps<{
 const search = ref(props.filters.search || '');
 watch(search, (value) => {
     router.get(
-        products().url,
+        route('products'),
         { search: value },
         { preserveState: true, replace: true },
     );

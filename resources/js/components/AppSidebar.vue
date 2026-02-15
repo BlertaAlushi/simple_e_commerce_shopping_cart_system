@@ -11,7 +11,6 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { dashboard, products, cart } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
 import { LayoutGrid, ShoppingCart, List } from 'lucide-vue-next';
@@ -25,17 +24,17 @@ const props = defineProps<{
 const mainNavItems = computed<NavItem[]>(() => [
     {
         title: 'Dashboard',
-        href: dashboard(),
+        href: route('dashboard'),
         icon: LayoutGrid,
     },
     {
         title: 'Products',
-        href: products(),
+        href: route('products'),
         icon: List,
     },
     {
         title: 'Shopping cart',
-        href: cart(),
+        href: route('cart'),
         icon: ShoppingCart,
         badge: props.cart_products_count,
     },
@@ -50,7 +49,7 @@ const footerNavItems: NavItem[] = [];
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="dashboard()">
+                        <Link :href="route('dashboard')">
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>

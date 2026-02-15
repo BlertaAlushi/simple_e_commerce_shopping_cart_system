@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { cart } from '@/routes';
 import { type BreadcrumbItem, type UserCart } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import CartProduct from '@/components/CartProduct.vue';
@@ -11,7 +10,7 @@ import { router } from '@inertiajs/vue3';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Cart',
-        href: cart().url,
+        href: route('cart'),
     },
 ];
 

@@ -41,6 +41,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'setLocale' => SetLocale::class,
         ]);
+
+        $middleware->redirectUsersTo(function () {
+            return '/' . app()->getLocale() ;
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
