@@ -14,9 +14,13 @@ return new class extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('status_id')->constrained('order_statuses')->onDelete('cascade');
-            $table->foreignId('address_id')->constrained('order_addresses')->onDelete('cascade');
+            $table->foreignId('order_status_id')->constrained()->onDelete('cascade');
+            $table->foreignId('order_address_id')->constrained()->onDelete('cascade');
             $table->timestamps();
+
+            $table->index('user_id');
+            $table->index('order_status_id');
+            $table->index('order_address_id');
         });
     }
 

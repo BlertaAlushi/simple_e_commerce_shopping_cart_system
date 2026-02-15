@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('body_parts_languages', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('body_part_id')->constrained('body_parts')->cascadeOnDelete();
-            $table->foreignId('language_id')->constrained('languages')->cascadeOnDelete();
+            $table->foreignId('body_part_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('language_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->timestamps();
+
+            $table->primary(['body_part_id', 'language_id']);
         });
     }
 

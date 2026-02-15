@@ -12,14 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('product_languages', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('product_id')->constrained()->onDelete('cascade');
             $table->foreignId('language_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('description');
             $table->timestamps();
 
-            $table->unique(['product_id', 'language_id']);
+            $table->primary(['product_id', 'language_id']);
         });
     }
 

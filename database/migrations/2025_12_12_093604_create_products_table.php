@@ -20,6 +20,10 @@ return new class extends Migration
             $table->unsignedInteger('stock_quantity');
             $table->foreignId('mark_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+
+            $table->index('mark_id');
+            $table->index('price');
+            $table->index('name');
         });
     }
 

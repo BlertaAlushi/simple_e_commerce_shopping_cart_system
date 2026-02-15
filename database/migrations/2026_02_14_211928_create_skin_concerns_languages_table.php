@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('skin_concerns_languages', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('skin_concern_id_id')->constrained('skin_concerns')->cascadeOnDelete();
-            $table->foreignId('language_id')->constrained('languages')->cascadeOnDelete();
+            $table->foreignId('skin_concern_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('language_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->timestamps();
+
+            $table->primary(['skin_concern_id', 'language_id']);
         });
     }
 
