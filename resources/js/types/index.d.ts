@@ -69,3 +69,45 @@ export interface UserCart {
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;
+
+
+export type FilterOptionItem = {
+    id: number;
+    translation :{
+        name:string;
+    }
+};
+
+export interface FilterOptions {
+    skinTypes: FilterOptionItem[];
+    skinConcerns: FilterOptionItem[];
+    productTypes: FilterOptionItem[];
+    marks: FilterOptionItem[];
+}
+
+export interface Filters {
+    skin_types: number[];
+    skin_concerns: number[];
+    product_types: number[];
+    marks: number[];
+}
+
+export interface MenuItem {
+    slug: string;
+    translation: {
+        name: string;
+    };
+}
+
+export interface language {
+    code: string;
+    language: string;
+}
+
+export interface MenuType {
+    bodyParts: MenuItem[];
+    productTypes: MenuItem[];
+    skinTypes: MenuItem[];
+    skinConcerns: MenuItem[];
+    marks: MenuItem[];
+}

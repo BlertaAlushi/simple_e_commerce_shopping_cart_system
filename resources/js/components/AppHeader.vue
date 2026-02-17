@@ -4,9 +4,16 @@ import AppLogoIcon from '@/components/AppLogoIcon.vue';
 import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import { usePage } from '@inertiajs/vue3';
+import { route } from 'ziggy-js';
+import { useI18n } from 'vue-i18n';
+import { Globe } from 'lucide-vue-next';
+import { MenuType, language, MenuItem } from '@/types';
+import { ref } from 'vue';
 import {
     DropdownMenu,
     DropdownMenuContent,
+    DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
@@ -32,19 +39,84 @@ import UserMenuContent from '@/components/UserMenuContent.vue';
 import { getInitials } from '@/composables/useInitials';
 import { toUrl, urlIsActive } from '@/lib/utils';
 import type { BreadcrumbItem, NavItem } from '@/types';
-import { InertiaLinkProps, Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-vue-next';
+import { InertiaLinkProps, Link } from '@inertiajs/vue3';
+import { Menu, Search, UserRound } from 'lucide-vue-next';
 import { computed } from 'vue';
+import SearchOverlay from '@/components/SearchOverlay.vue';
 
+const page = usePage<{
+    menu: MenuType;
+    auth: { user: any };
+    name: string;
+    quote: {
+        message: string;
+        author: string;
+    };
+    sidebarOpen: boolean;
+    languages: language[];
+}>();
+
+function changeLanguage(code: string) {
+    const segments = window.location.pathname.split('/').filter(Boolean);
+    segments[0] = code;
+    window.location.href = '/' + segments.join('/') + window.location.search;
+}
+
+const { t } = useI18n();
 interface Props {
     breadcrumbs?: BreadcrumbItem[];
+    canRegister: boolean;
 }
 
 const props = withDefaults(defineProps<Props>(), {
     breadcrumbs: () => [],
+    canRegister: () => true,
 });
 
-const page = usePage();
+const menufilters = computed(() => page.props.menu);
+
+interface MenuInterface {
+    key: string;
+    title: string;
+    url: string;
+    items: MenuItem[];
+}
+
+const menu: MenuInterface[] = [
+    {
+        key: 'body_parts',
+        title: t('home.products'),
+        url: 'collection.types',
+        items: menufilters.value.bodyParts,
+    },
+    {
+        key: 'skin_types',
+        title: t('home.skin_types'),
+        url: 'collection.skin.types',
+        items: menufilters.value.skinTypes,
+    },
+    {
+        key: 'skin_concerns',
+        title: t('home.skin_concerns'),
+        url: 'collection.skin.conerns',
+        items: menufilters.value.skinConcerns,
+    },
+    {
+        key: 'product_types',
+        title: t('home.product_types'),
+        url: 'collection.product.types',
+        items: menufilters.value.productTypes,
+    },
+    {
+        key: 'marks',
+        title: t('home.marks'),
+        url: 'collection.marks',
+        items: menufilters.value.marks,
+    },
+];
+
+const languages = computed(() => page.props.languages);
+
 const auth = computed(() => page.props.auth);
 
 const isCurrentRoute = computed(
@@ -61,30 +133,25 @@ const activeItemStyles = computed(
 
 const mainNavItems: NavItem[] = [
     {
-        title: 'Dashboard',
-        href: route('dashboard'),
-        icon: LayoutGrid,
+        title: t('home.home'),
+        href: route('home'),
+        // icon: LayoutGrid,
     },
 ];
 
-const rightNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
-    },
-];
+const rightNavItems: NavItem[] = [];
+
+const searchOpen = ref(false);
+
+function toggleSearch() {
+    searchOpen.value = !searchOpen.value;
+}
 </script>
 
 <template>
     <div>
         <div class="border-b border-sidebar-border/80">
-            <div class="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
+            <div class="flex h-16 items-center px-4">
                 <!-- Mobile Menu -->
                 <div class="lg:hidden">
                     <Sheet>
@@ -147,16 +214,17 @@ const rightNavItems: NavItem[] = [
                     </Sheet>
                 </div>
 
-                <Link :href="route('dashboard')" class="flex items-center gap-x-2">
+                <Link :href="route('home')" class="flex items-center gap-x-2">
                     <AppLogo />
                 </Link>
 
                 <!-- Desktop Menu -->
-                <div class="hidden h-full lg:flex lg:flex-1">
-                    <NavigationMenu class="ml-10 flex h-full items-stretch">
+                <div class="hidden h-full justify-center lg:flex lg:flex-1">
+                    <NavigationMenu class="flex h-full items-stretch">
                         <NavigationMenuList
-                            class="flex h-full items-stretch space-x-2"
+                            class="flex h-full items-stretch space-x-6"
                         >
+                            <!-- Main nav items -->
                             <NavigationMenuItem
                                 v-for="(item, index) in mainNavItems"
                                 :key="index"
@@ -177,10 +245,53 @@ const rightNavItems: NavItem[] = [
                                     />
                                     {{ item.title }}
                                 </Link>
+
                                 <div
                                     v-if="isCurrentRoute(item.href)"
                                     class="absolute bottom-0 left-0 h-0.5 w-full translate-y-px bg-black dark:bg-white"
                                 ></div>
+                            </NavigationMenuItem>
+
+                            <!-- Dropdown menus -->
+                            <NavigationMenuItem
+                                v-for="menuItem in menu"
+                                :key="menuItem.key"
+                                class="relative flex h-full items-center"
+                            >
+                                <DropdownMenu v-if="menuItem.items?.length">
+                                    <DropdownMenuTrigger :as-child="true">
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            class="relative size-10 w-auto cursor-pointer px-3"
+                                        >
+                                            {{ menuItem.title }}
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent
+                                        align="center"
+                                        class="w-56"
+                                    >
+                                        <DropdownMenuItem
+                                            :as-child="true"
+                                            v-for="type in menuItem.items"
+                                            :key="type.slug"
+                                        >
+                                            <Link
+                                                class="block w-full cursor-pointer"
+                                                :href="
+                                                    route(
+                                                        menuItem.url,
+                                                        type.slug,
+                                                    )
+                                                "
+                                                as="button"
+                                            >
+                                                {{ type.translation.name }}
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
                             </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>
@@ -192,6 +303,7 @@ const rightNavItems: NavItem[] = [
                             variant="ghost"
                             size="icon"
                             class="group h-9 w-9 cursor-pointer"
+                            @click="toggleSearch"
                         >
                             <Search
                                 class="size-5 opacity-80 group-hover:opacity-100"
@@ -236,7 +348,7 @@ const rightNavItems: NavItem[] = [
                         </div>
                     </div>
 
-                    <DropdownMenu>
+                    <DropdownMenu v-if="$page.props.auth.user">
                         <DropdownMenuTrigger :as-child="true">
                             <Button
                                 variant="ghost"
@@ -263,6 +375,43 @@ const rightNavItems: NavItem[] = [
                             <UserMenuContent :user="auth.user" />
                         </DropdownMenuContent>
                     </DropdownMenu>
+                    <Link
+                        v-else
+                        key="login"
+                        :href="route('login')"
+                        class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent"
+                        :class="activeItemStyles(route('login'))"
+                    >
+                        <component :is="UserRound" class="h-5 w-5" />
+                    </Link>
+
+                    <DropdownMenu>
+                        <DropdownMenuTrigger :as-child="true">
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                class="relative size-10 w-auto cursor-pointer px-3"
+                            >
+                                <Globe />
+                            </Button>
+                        </DropdownMenuTrigger>
+
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                                :as-child="true"
+                                v-for="lang in languages"
+                                :key="lang.code"
+                            >
+                                <Button
+                                    variant="ghost"
+                                    class="relative w-full justify-start px-3"
+                                    @click="changeLanguage(lang.code)"
+                                >
+                                    {{ lang.language }}
+                                </Button>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </div>
         </div>
@@ -277,5 +426,6 @@ const rightNavItems: NavItem[] = [
                 <Breadcrumbs :breadcrumbs="breadcrumbs" />
             </div>
         </div>
+        <SearchOverlay v-model="searchOpen" />
     </div>
 </template>

@@ -16,6 +16,7 @@ import { Link } from '@inertiajs/vue3';
 import { LayoutGrid, ShoppingCart, List } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import { computed } from 'vue';
+import { route } from 'ziggy-js';
 
 const props = defineProps<{
     cart_products_count: number;

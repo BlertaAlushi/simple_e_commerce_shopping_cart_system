@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\BodyPart;
+use App\Models\Mark;
+use App\Models\ProductType;
+use App\Models\SkinConcern;
+use App\Models\SkinType;
+use Illuminate\Http\Request;
+
+class FilterOptionsService
+{
+    public static function filterOptions()
+    {
+        return [
+            'skinTypes' => SkinType::select('id')->with('translation:skin_type_id,name')->get(),
+            'skinConcerns' => SkinConcern::select('id')->with('translation:skin_concern_id,name')->get(),
+            'productTypes' => ProductType::select('id')->with('translation:product_type_id,name')->get(),
+            'extras' => SkinConcern::select('id')->with('translation:skin_concern_id,name')->get(),
+        ];
+    }
+
+    public static function menuOptions(){
+        return [
+            'bodyParts' => BodyPart::select('id','slug','name')->with('translation:body_part_id,name')->get(),
+            'skinTypes' => SkinType::select('id','slug','name')->with('translation:skin_type_id,name')->get(),
+            'skinConcerns' => SkinConcern::select('id','slug','name')->with('translation:skin_concern_id,name')->get(),
+            'productTypes' => ProductType::select('id','slug','name')->with('translation:product_type_id,name')->get(),
+            'marks' => Mark::select('id','slug','name')->with('translation:mark_id,name')->get(),
+        ];
+    }
+
+    public static function urlQueryFilters(Request $request){
+        return [
+            'skin_types' => $request->skin_types ?? [],
+            'skin_concerns' => $request->skin_concerns ?? [],
+            'product_types' => $request->product_types ?? [],
+            'extras' => $request->marks ?? [],
+        ];
+    }
+}

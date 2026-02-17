@@ -2,8 +2,16 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\BodyPart;
+use App\Models\Language;
+use App\Models\Mark;
+use App\Models\ProductType;
+use App\Models\SkinConcern;
+use App\Models\SkinType;
+use App\Services\FilterOptionsService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -37,7 +45,10 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
-
+        $menu = Cache::remember('menu', 3600, function () {
+            return FilterOptionsService::menuOptions();
+        });
+        $languages = Language::select('code','language')->get();
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -46,6 +57,8 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
+            'menu' => $menu,
+            'languages' => $languages,
         ];
     }
 }

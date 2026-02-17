@@ -4,6 +4,7 @@ import { type BreadcrumbItem, type Product } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 import ProductC from '@/components/Product.vue';
 import { ref, watch } from 'vue';
+import { route } from 'ziggy-js';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -52,7 +53,7 @@ function setCartProductQuantity(quantity: number) {
                 v-model="search"
                 type="text"
                 placeholder="Search products..."
-                class="w-full rounded border px-3 py-2 mb-4"
+                class="mb-4 w-full rounded border px-3 py-2"
             />
 
             <div class="grid auto-rows-min gap-4 md:grid-cols-4">

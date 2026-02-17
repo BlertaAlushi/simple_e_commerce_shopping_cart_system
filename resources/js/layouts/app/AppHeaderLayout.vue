@@ -6,17 +6,19 @@ import type { BreadcrumbItemType } from '@/types';
 
 interface Props {
     breadcrumbs?: BreadcrumbItemType[];
+    canRegister: boolean;
 }
 
 withDefaults(defineProps<Props>(), {
     breadcrumbs: () => [],
+    canRegister: () => true,
 });
 </script>
 
 <template>
     <AppShell class="flex-col">
-        <AppHeader :breadcrumbs="breadcrumbs" />
-        <AppContent>
+        <AppHeader :breadcrumbs="breadcrumbs" :canRegister="canRegister" />
+        <AppContent variant="sidebar" class="overflow-x-hidden">
             <slot />
         </AppContent>
     </AppShell>

@@ -102,7 +102,7 @@ async function order() {
             <p class="text-md text-left">Your cart is empty!</p>
             <p class="text-left text-sm">
                 Browse
-                <a href="/products" class="text-blue-300"> Products </a> and
+                <a href="/Admin/Products" class="text-blue-300"> Products </a> and
                 select your favorite ones.
             </p>
         </div>

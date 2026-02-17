@@ -16,7 +16,7 @@ class ProductsController extends Controller
             ->paginate(8)
             ->withQueryString();
 
-        return Inertia::render('Products', [
+        return Inertia::render('admin/Products', [
             'products_array' => $products,
             'filters' => $request->only('search'),
         ]);
