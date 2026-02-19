@@ -75,31 +75,31 @@ const menu: MenuInterface[] = [
         key: 'body_parts',
         title: t('home.products'),
         url: 'collection.types',
-        items: menufilters.value.bodyParts,
+        items: menufilters.value.bodyParts.data,
     },
     {
         key: 'skin_types',
         title: t('home.skin_types'),
         url: 'collection.skin.types',
-        items: menufilters.value.skinTypes,
+        items: menufilters.value.skinTypes.data,
     },
     {
         key: 'skin_concerns',
         title: t('home.skin_concerns'),
         url: 'collection.skin.conerns',
-        items: menufilters.value.skinConcerns,
+        items: menufilters.value.skinConcerns.data,
     },
     {
         key: 'product_types',
         title: t('home.product_types'),
         url: 'collection.product.types',
-        items: menufilters.value.productTypes,
+        items: menufilters.value.productTypes.data,
     },
     {
         key: 'marks',
         title: t('home.marks'),
         url: 'collection.marks',
-        items: menufilters.value.marks,
+        items: menufilters.value.marks.data,
     },
 ];
 
@@ -245,7 +245,7 @@ function toggleSearch() {
                                                         )
                                                     "
                                                     >{{
-                                                        item.translation.name
+                                                        item.name
                                                     }}</a
                                                 >
                                             </NavigationMenuLink>
@@ -270,7 +270,7 @@ function toggleSearch() {
                             />
                         </Button>
 
-                    <DropdownMenu v-if="page.props.auth.user">
+                    <DropdownMenu v-if="auth.user">
                         <DropdownMenuTrigger :as-child="true">
                             <Button
                                 variant="ghost"

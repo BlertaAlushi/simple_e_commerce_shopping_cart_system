@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppLayout from '@/layouts/AppLayout.vue';
+import AppLayout from '@/layouts/AdminLayout.vue';
 import { type BreadcrumbItem, type Product } from '@/types';
 import { Head, router } from '@inertiajs/vue3';
 import ProductC from '@/components/Product.vue';
@@ -9,7 +9,7 @@ import { route } from 'ziggy-js';
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Products',
-        href: route('products'),
+        href: route('admin.products'),
     },
 ];
 
@@ -27,7 +27,7 @@ const props = defineProps<{
 const search = ref(props.filters.search || '');
 watch(search, (value) => {
     router.get(
-        route('products'),
+        route('admin.products'),
         { search: value },
         { preserveState: true, replace: true },
     );

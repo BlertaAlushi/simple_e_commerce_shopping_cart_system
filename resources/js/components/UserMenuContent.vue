@@ -7,8 +7,8 @@ import {
     DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import type { User } from '@/types';
-import { Link} from '@inertiajs/vue3';
-import { LogOut, Settings } from 'lucide-vue-next';
+import { Link } from '@inertiajs/vue3';
+import { LogOut, Settings, LayoutGrid } from 'lucide-vue-next';
 
 interface Props {
     user: User;
@@ -25,6 +25,17 @@ defineProps<Props>();
     </DropdownMenuLabel>
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
+        <DropdownMenuItem :as-child="true" v-if="user.admin">
+            <Link
+                class="block w-full"
+                :href="route('admin.dashboard')"
+                prefetch
+                as="button"
+            >
+                <LayoutGrid class="mr-2 h-4 w-4" />
+                 Admin Dashboard
+            </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem :as-child="true">
             <Link
                 class="block w-full"

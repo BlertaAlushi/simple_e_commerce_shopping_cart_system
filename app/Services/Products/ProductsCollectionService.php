@@ -21,9 +21,13 @@ class ProductsCollectionService implements ProductsCollectionInterface
 
         foreach ($this->pivotFilters as $filterKey => $relation) {
             if (!empty($filters[$filterKey])) {
-                $query->whereHas($relation, function ($q) use ($filters, $filterKey) {
-                    $q->whereIn('id', $filters[$filterKey]);
-                });
+                if($filterKey == 'marks'){
+                    $query->where('mark_id', $filters[$filterKey]);
+                }else {
+                    $query->whereHas($relation, function ($q) use ($filters, $filterKey) {
+                        $q->whereIn('id', $filters[$filterKey]);
+                    });
+                }
             }
         }
 

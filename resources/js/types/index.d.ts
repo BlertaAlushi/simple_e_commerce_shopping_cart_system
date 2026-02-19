@@ -35,6 +35,7 @@ export interface User {
     email_verified_at: string | null;
     created_at: string;
     updated_at: string;
+    admin:boolean;
 }
 
 export interface Product {
@@ -94,9 +95,7 @@ export interface Filters {
 
 export interface MenuItem {
     slug: string;
-    translation: {
-        name: string;
-    };
+    name: string;
 }
 
 export interface language {
@@ -105,9 +104,13 @@ export interface language {
 }
 
 export interface MenuType {
-    bodyParts: MenuItem[];
-    productTypes: MenuItem[];
-    skinTypes: MenuItem[];
-    skinConcerns: MenuItem[];
-    marks: MenuItem[];
+    bodyParts: MenuData;
+    productTypes: MenuData;
+    skinTypes: MenuData;
+    skinConcerns: MenuData;
+    marks: MenuData;
+}
+
+interface MenuData{
+    data:MenuItem[]
 }

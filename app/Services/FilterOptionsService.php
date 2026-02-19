@@ -7,6 +7,7 @@ use App\Models\Mark;
 use App\Models\ProductType;
 use App\Models\SkinConcern;
 use App\Models\SkinType;
+use App\Resources\MenuResource;
 use Illuminate\Http\Request;
 
 class FilterOptionsService
@@ -23,11 +24,11 @@ class FilterOptionsService
 
     public static function menuOptions(){
         return [
-            'bodyParts' => BodyPart::select('id','slug','name')->with('translation:body_part_id,name')->get(),
-            'skinTypes' => SkinType::select('id','slug','name')->with('translation:skin_type_id,name')->get(),
-            'skinConcerns' => SkinConcern::select('id','slug','name')->with('translation:skin_concern_id,name')->get(),
-            'productTypes' => ProductType::select('id','slug','name')->with('translation:product_type_id,name')->get(),
-            'marks' => Mark::select('id','slug','name')->with('translation:mark_id,name')->get(),
+            'bodyParts' => MenuResource::collection(BodyPart::select('id','slug','name')->with('translation:body_part_id,name')->get()),
+            'skinTypes' => MenuResource::collection(SkinType::select('id','slug','name')->with('translation:skin_type_id,name')->get()),
+            'skinConcerns' => MenuResource::collection(SkinConcern::select('id','slug','name')->with('translation:skin_concern_id,name')->get()),
+            'productTypes' => MenuResource::collection(ProductType::select('id','slug','name')->with('translation:product_type_id,name')->get()),
+            'marks' => MenuResource::collection(Mark::select('id','slug','name')->get()),
         ];
     }
 

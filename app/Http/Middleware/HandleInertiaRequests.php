@@ -45,9 +45,10 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
-        $menu = Cache::remember('menu', 3600, function () {
-            return FilterOptionsService::menuOptions();
-        });
+//        $menu = Cache::remember('menu', 3600, function () {
+//            return FilterOptionsService::menuOptions();
+//        });
+        $menu = FilterOptionsService::menuOptions();
         $languages = Language::select('code','language')->get();
         return [
             ...parent::share($request),
@@ -59,6 +60,7 @@ class HandleInertiaRequests extends Middleware
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'menu' => $menu,
             'languages' => $languages,
+            'app_domain'=>config('app.domain'),
         ];
     }
 }

@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import AppLayout from '@/layouts/AppLayout.vue';
+import AppLayout from '@/layouts/AdminLayout.vue';
 import { type BreadcrumbItem, type UserCart } from '@/types';
 import { Head } from '@inertiajs/vue3';
+import {route} from 'ziggy-js'
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
-        href: route('dashboard'),
+        href: route('admin.dashboard'),
     },
 ];
 

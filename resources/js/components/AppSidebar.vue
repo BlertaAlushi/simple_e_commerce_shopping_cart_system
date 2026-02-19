@@ -25,19 +25,13 @@ const props = defineProps<{
 const mainNavItems = computed<NavItem[]>(() => [
     {
         title: 'Dashboard',
-        href: route('dashboard'),
+        href: route('admin.dashboard'),
         icon: LayoutGrid,
     },
     {
         title: 'Products',
-        href: route('products'),
+        href: route('admin.products'),
         icon: List,
-    },
-    {
-        title: 'Shopping cart',
-        href: route('cart'),
-        icon: ShoppingCart,
-        badge: props.cart_products_count,
     },
 ]);
 
@@ -50,7 +44,7 @@ const footerNavItems: NavItem[] = [];
             <SidebarMenu>
                 <SidebarMenuItem>
                     <SidebarMenuButton size="lg" as-child>
-                        <Link :href="route('dashboard')">
+                        <Link :href="route('home')">
                             <AppLogo />
                         </Link>
                     </SidebarMenuButton>
