@@ -4,37 +4,25 @@ import { defineProps, reactive, watch } from 'vue';
 import { type Filters, FilterOptions, FilterOptionItem } from '@/types';
 import { ChevronUp, ChevronDown } from 'lucide-vue-next'
 
-// ---------------------------
-// Props
-// ---------------------------
 const props = defineProps<{
     filterOptions: FilterOptions;
     filters: Filters;
 }>();
 
-// ---------------------------
-// Reactive form (checkbox state)
-// ---------------------------
 const form = reactive<Filters>({
     skin_types: [...(props.filters.skin_types ?? [])],
     skin_concerns: [...(props.filters.skin_concerns ?? [])],
     product_types: [...(props.filters.product_types ?? [])],
-    marks: [...(props.filters.marks ?? [])],
+    extras: [...(props.filters.extras ?? [])],
 });
 
-// ---------------------------
-// Accordion open state
-// ---------------------------
 const openGroups = reactive<Record<keyof Filters, boolean>>({
     skin_types: true,
     skin_concerns: true,
     product_types: true,
-    marks: true,
+    extras: true,
 });
 
-// ---------------------------
-// Watch form changes -> GET request
-// ---------------------------
 watch(
     form,
     () => {
@@ -47,9 +35,6 @@ watch(
     { deep: true },
 );
 
-// ---------------------------
-// Filter groups array for looping
-// ---------------------------
 type FilterGroupKey = keyof Filters;
 
 interface FilterGroup {
@@ -75,9 +60,9 @@ const filterGroups: FilterGroup[] = [
         items: props.filterOptions.productTypes,
     },
     {
-        key: 'marks',
-        title: 'Marks',
-        items: props.filterOptions.marks,
+        key: 'extras',
+        title: 'Extras',
+        items: props.filterOptions.extras,
     },
 ];
 </script>
@@ -85,7 +70,7 @@ const filterGroups: FilterGroup[] = [
 <template>
     <aside class="sticky h-screen w-90 shrink-0 overflow-y-auto px-12 py-8">
         <div v-for="group in filterGroups" :key="group.key">
-            <div v-if="group.items?.length" class="mb-4">
+            <div v-if="group.items.length" class="mb-4">
                 <button
                     @click="openGroups[group.key] = !openGroups[group.key]"
                     :class="[

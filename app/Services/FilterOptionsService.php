@@ -31,12 +31,12 @@ class FilterOptionsService
         ];
     }
 
-    public static function urlQueryFilters(Request $request){
+    public static function filters($request){
         return [
             'skin_types' => $request->skin_types ?? [],
             'skin_concerns' => $request->skin_concerns ?? [],
             'product_types' => $request->product_types ?? [],
-            'extras' => $request->marks ?? [],
+            'extras' => $request->extras ?? [],
         ];
     }
 }

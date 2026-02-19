@@ -17,11 +17,6 @@ class BodyPart extends Model
       "slug"
     ];
 
-    public function getRouteKeyName(): string
-    {
-        return 'slug';
-    }
-
     public function translations(): HasMany{
         return $this->hasMany(BodyPartLanguage::class);
     }

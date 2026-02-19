@@ -82,14 +82,14 @@ export interface FilterOptions {
     skinTypes: FilterOptionItem[];
     skinConcerns: FilterOptionItem[];
     productTypes: FilterOptionItem[];
-    marks: FilterOptionItem[];
+    extras: FilterOptionItem[];
 }
 
 export interface Filters {
     skin_types: number[];
     skin_concerns: number[];
     product_types: number[];
-    marks: number[];
+    extras: number[];
 }
 
 export interface MenuItem {

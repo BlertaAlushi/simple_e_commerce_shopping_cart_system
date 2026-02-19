@@ -3,9 +3,15 @@ import { Head } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SideBarFilters from '@/components/SideBarFilters.vue';
 import { type Filters, FilterOptions } from '@/types';
+import storage from "@/routes/storage";
 
 const props = defineProps<{
-    products: any[];
+    products: {
+        data:{
+            slug:string;
+
+        }[]
+    };
     filters: Filters;
     filterOptions: FilterOptions;
 }>();
@@ -25,7 +31,9 @@ const { products, filters, filterOptions } = props;
             />
             <!-- Products list -->
             <main class="flex-1">
-
+                <div v-for="product in products.data" :key="product.slug">
+                    {{ product.slug }}
+                </div>
             </main>
         </div>
     </AppLayout>
