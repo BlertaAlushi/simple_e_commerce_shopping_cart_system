@@ -3,6 +3,7 @@ import { ref, watch, nextTick, defineProps } from 'vue';
 import { Search, X } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
 import { router } from '@inertiajs/vue3';
+import { Input } from '@/components/ui/input';
 
 const props = defineProps({
     modelValue: Boolean,
@@ -40,25 +41,20 @@ function submitSearch() {
         preserveScroll: true,
     });
 }
-function handleKeyPress(e: KeyboardEvent) {
-    if (e.key === 'Enter') submitSearch();
-}
 </script>
 
 <template>
     <transition name="slide-down">
         <div
             v-if="modelValue"
-            class="w-full border-b border-gray-200 bg-white shadow-sm"
+            class="w-full"
         >
             <div class="mx-auto flex w-full max-w-5xl items-center gap-2 p-4">
-                <input
+                <Input
                     ref="inputRef"
                     v-model="query"
                     type="text"
                     placeholder="Search products..."
-                    class="flex-1 rounded border border-gray-300 px-3 py-2 transition focus:ring-1 focus:ring-black focus:outline-none"
-                    @keypress="handleKeyPress"
                 />
                 <Button
                     variant="ghost"

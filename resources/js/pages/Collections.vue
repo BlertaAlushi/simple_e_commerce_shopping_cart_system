@@ -22,10 +22,10 @@ const { products, filters, filterOptions } = props;
             <SideBarFilters
                 :filters="filters"
                 :filterOptions="filterOptions"
-                class=" sticky top-6 h-screen overflow-y-auto bg-white p-8 shadow-sm"
             />
             <!-- Products list -->
             <main class="flex-1">
+
             </main>
         </div>
     </AppLayout>

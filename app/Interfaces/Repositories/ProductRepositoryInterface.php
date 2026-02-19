@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Interfaces\Collection;
+namespace App\Interfaces\Repositories;
 
-interface CollectionRepositoryInterface
+interface ProductRepositoryInterface
 {
     public function queryMenuOption($option);
     public function queryFilerOptions($filterOptions);

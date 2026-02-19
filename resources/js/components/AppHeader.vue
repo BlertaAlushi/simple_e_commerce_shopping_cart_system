@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import AppLogo from '@/components/AppLogo.vue';
 import AppLogoIcon from '@/components/AppLogoIcon.vue';
-import Breadcrumbs from '@/components/Breadcrumbs.vue';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { usePage } from '@inertiajs/vue3';
@@ -20,6 +19,9 @@ import {
     NavigationMenu,
     NavigationMenuItem,
     NavigationMenuList,
+    NavigationMenuContent,
+    NavigationMenuTrigger,
+    NavigationMenuLink,
     navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu';
 import {
@@ -29,16 +31,11 @@ import {
     SheetTitle,
     SheetTrigger,
 } from '@/components/ui/sheet';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from '@/components/ui/tooltip';
+
 import UserMenuContent from '@/components/UserMenuContent.vue';
 import { getInitials } from '@/composables/useInitials';
 import { toUrl, urlIsActive } from '@/lib/utils';
-import type { BreadcrumbItem, NavItem } from '@/types';
+import type {NavItem } from '@/types';
 import { InertiaLinkProps, Link } from '@inertiajs/vue3';
 import { Menu, Search, UserRound } from 'lucide-vue-next';
 import { computed } from 'vue';
@@ -63,15 +60,6 @@ function changeLanguage(code: string) {
 }
 
 const { t } = useI18n();
-interface Props {
-    breadcrumbs?: BreadcrumbItem[];
-    canRegister: boolean;
-}
-
-const props = withDefaults(defineProps<Props>(), {
-    breadcrumbs: () => [],
-    canRegister: () => true,
-});
 
 const menufilters = computed(() => page.props.menu);
 
@@ -139,8 +127,6 @@ const mainNavItems: NavItem[] = [
     },
 ];
 
-const rightNavItems: NavItem[] = [];
-
 const searchOpen = ref(false);
 
 function toggleSearch() {
@@ -150,8 +136,8 @@ function toggleSearch() {
 
 <template>
     <div>
-        <div class="border-b border-sidebar-border/80">
-            <div class="flex h-16 items-center px-4">
+        <div>
+            <div class="flex h-20 items-center p-6">
                 <!-- Mobile Menu -->
                 <div class="lg:hidden">
                     <Sheet>
@@ -164,7 +150,7 @@ function toggleSearch() {
                                 <Menu class="h-5 w-5" />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="left" class="w-[300px] p-6">
+                        <SheetContent side="left" class="w-75 p-6">
                             <SheetTitle class="sr-only"
                                 >Navigation Menu</SheetTitle
                             >
@@ -192,23 +178,6 @@ function toggleSearch() {
                                         {{ item.title }}
                                     </Link>
                                 </nav>
-                                <div class="flex flex-col space-y-4">
-                                    <a
-                                        v-for="item in rightNavItems"
-                                        :key="item.title"
-                                        :href="toUrl(item.href)"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        class="flex items-center space-x-2 text-sm font-medium"
-                                    >
-                                        <component
-                                            v-if="item.icon"
-                                            :is="item.icon"
-                                            class="h-5 w-5"
-                                        />
-                                        <span>{{ item.title }}</span>
-                                    </a>
-                                </div>
                             </div>
                         </SheetContent>
                     </Sheet>
@@ -252,46 +221,37 @@ function toggleSearch() {
                                 ></div>
                             </NavigationMenuItem>
 
-                            <!-- Dropdown menus -->
                             <NavigationMenuItem
                                 v-for="menuItem in menu"
                                 :key="menuItem.key"
                                 class="relative flex h-full items-center"
                             >
-                                <DropdownMenu v-if="menuItem.items?.length">
-                                    <DropdownMenuTrigger :as-child="true">
-                                        <Button
-                                            variant="ghost"
-                                            size="icon"
-                                            class="relative size-10 w-auto cursor-pointer px-3"
-                                        >
-                                            {{ menuItem.title }}
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent
-                                        align="center"
-                                        class="w-56"
-                                    >
-                                        <DropdownMenuItem
-                                            :as-child="true"
-                                            v-for="type in menuItem.items"
-                                            :key="type.slug"
-                                        >
-                                            <Link
-                                                class="block w-full cursor-pointer"
-                                                :href="
-                                                    route(
-                                                        menuItem.url,
-                                                        type.slug,
-                                                    )
-                                                "
-                                                as="button"
+                                <NavigationMenuTrigger>{{
+                                    menuItem.title
+                                }}</NavigationMenuTrigger>
+                                <NavigationMenuContent>
+                                    <ul class="grid w-50 gap-4">
+                                        <li>
+                                            <NavigationMenuLink
+                                                v-for="item in menuItem.items"
+                                                :key="item.slug"
+                                                as-child
                                             >
-                                                {{ type.translation.name }}
-                                            </Link>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
+                                                <a
+                                                    :href="
+                                                        route(
+                                                            menuItem.url,
+                                                            item.slug,
+                                                        )
+                                                    "
+                                                    >{{
+                                                        item.translation.name
+                                                    }}</a
+                                                >
+                                            </NavigationMenuLink>
+                                        </li>
+                                    </ul>
+                                </NavigationMenuContent>
                             </NavigationMenuItem>
                         </NavigationMenuList>
                     </NavigationMenu>
@@ -310,45 +270,7 @@ function toggleSearch() {
                             />
                         </Button>
 
-                        <div class="hidden space-x-1 lg:flex">
-                            <template
-                                v-for="item in rightNavItems"
-                                :key="item.title"
-                            >
-                                <TooltipProvider :delay-duration="0">
-                                    <Tooltip>
-                                        <TooltipTrigger>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                as-child
-                                                class="group h-9 w-9 cursor-pointer"
-                                            >
-                                                <a
-                                                    :href="toUrl(item.href)"
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    <span class="sr-only">{{
-                                                        item.title
-                                                    }}</span>
-                                                    <component
-                                                        :is="item.icon"
-                                                        class="size-5 opacity-80 group-hover:opacity-100"
-                                                    />
-                                                </a>
-                                            </Button>
-                                        </TooltipTrigger>
-                                        <TooltipContent>
-                                            <p>{{ item.title }}</p>
-                                        </TooltipContent>
-                                    </Tooltip>
-                                </TooltipProvider>
-                            </template>
-                        </div>
-                    </div>
-
-                    <DropdownMenu v-if="$page.props.auth.user">
+                    <DropdownMenu v-if="page.props.auth.user">
                         <DropdownMenuTrigger :as-child="true">
                             <Button
                                 variant="ghost"
@@ -404,7 +326,7 @@ function toggleSearch() {
                             >
                                 <Button
                                     variant="ghost"
-                                    class="relative w-full justify-start px-3"
+                                    class="relative w-full justify-start px-3 cursor-pointer"
                                     @click="changeLanguage(lang.code)"
                                 >
                                     {{ lang.language }}
@@ -415,17 +337,7 @@ function toggleSearch() {
                 </div>
             </div>
         </div>
-
-        <div
-            v-if="props.breadcrumbs.length > 1"
-            class="flex w-full border-b border-sidebar-border/70"
-        >
-            <div
-                class="mx-auto flex h-12 w-full items-center justify-start px-4 text-neutral-500 md:max-w-7xl"
-            >
-                <Breadcrumbs :breadcrumbs="breadcrumbs" />
-            </div>
-        </div>
         <SearchOverlay v-model="searchOpen" />
+    </div>
     </div>
 </template>

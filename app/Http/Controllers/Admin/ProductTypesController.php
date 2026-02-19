@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Collections;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class ProductTypesController extends Controller
 {

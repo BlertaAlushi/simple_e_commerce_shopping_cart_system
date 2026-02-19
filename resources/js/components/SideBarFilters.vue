@@ -2,7 +2,7 @@
 import { router } from '@inertiajs/vue3';
 import { defineProps, reactive, watch } from 'vue';
 import { type Filters, FilterOptions, FilterOptionItem } from '@/types';
-import { ChevronUp, ChevronDown } from 'lucide-vue-next';
+import { ChevronUp, ChevronDown } from 'lucide-vue-next'
 
 // ---------------------------
 // Props
@@ -77,20 +77,20 @@ const filterGroups: FilterGroup[] = [
     {
         key: 'marks',
         title: 'Marks',
-        items: props.filterOptions.marks },
+        items: props.filterOptions.marks,
+    },
 ];
 </script>
 
 <template>
-    <aside class="sticky top-6 h-screen w-80 shrink-0 overflow-y-auto p-4">
+    <aside class="sticky h-screen w-90 shrink-0 overflow-y-auto px-12 py-8">
         <div v-for="group in filterGroups" :key="group.key">
             <div v-if="group.items?.length" class="mb-4">
-                <!-- Accordion toggle -->
                 <button
                     @click="openGroups[group.key] = !openGroups[group.key]"
                     :class="[
-                        'mb-3 flex w-full items-center justify-between pb-2 font-semibold',
-                        openGroups[group.key] ? 'border-b-1 border-gray-900' : '',
+                        'mb-3 flex w-full items-center justify-between pb-2 font-medium',
+                        openGroups[group.key] ? 'border-b border-gray-900' : '',
                     ]"
                 >
                     {{ group.title }}
@@ -100,7 +100,6 @@ const filterGroups: FilterGroup[] = [
                     />
                 </button>
 
-                <!-- Checkbox list -->
                 <div v-show="openGroups[group.key]" class="space-y-2 pl-2">
                     <label
                         v-for="item in group.items"
