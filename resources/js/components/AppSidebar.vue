@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
-import NavUser from '@/components/NavUser.vue';
 import {
     Sidebar,
     SidebarContent,
@@ -13,14 +12,13 @@ import {
 } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/vue3';
-import { LayoutGrid, ShoppingCart, List } from 'lucide-vue-next';
+import { LayoutGrid, List } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import { computed } from 'vue';
 import { route } from 'ziggy-js';
+import { useI18n } from 'vue-i18n';
 
-const props = defineProps<{
-    cart_products_count: number;
-}>();
+const { t } = useI18n();
 
 const mainNavItems = computed<NavItem[]>(() => [
     {
@@ -29,8 +27,13 @@ const mainNavItems = computed<NavItem[]>(() => [
         icon: LayoutGrid,
     },
     {
-        title: 'Products',
-        href: route('admin.products'),
+        title: t('home.body_parts'),
+        href: route('admin.body-parts.index'),
+        icon: List,
+    },
+    {
+        title: t('home.skin_types'),
+        href: route('admin.skin-types.index'),
         icon: List,
     },
 ]);
@@ -58,7 +61,6 @@ const footerNavItems: NavItem[] = [];
 
         <SidebarFooter>
             <NavFooter :items="footerNavItems" />
-            <NavUser />
         </SidebarFooter>
     </Sidebar>
     <slot />

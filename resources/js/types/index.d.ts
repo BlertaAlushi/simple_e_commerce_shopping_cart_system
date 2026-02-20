@@ -99,6 +99,7 @@ export interface MenuItem {
 }
 
 export interface language {
+    id:number
     code: string;
     language: string;
 }
@@ -113,4 +114,21 @@ export interface MenuType {
 
 interface MenuData{
     data:MenuItem[]
+}
+
+export interface PageType extends AppPageProps{
+    menu: MenuType;
+    languages: language[];
+}
+
+export interface Item{
+    id:number;
+    slug:string
+    name:string;
+    translations:Translation[];
+}
+
+export interface Translation{
+    language_id:number,
+    name:string,
 }

@@ -7,7 +7,7 @@ import { usePage } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 import { useI18n } from 'vue-i18n';
 import { Globe } from 'lucide-vue-next';
-import { MenuType, language, MenuItem } from '@/types';
+import { MenuItem } from '@/types';
 import { ref } from 'vue';
 import {
     DropdownMenu,
@@ -35,23 +35,13 @@ import {
 import UserMenuContent from '@/components/UserMenuContent.vue';
 import { getInitials } from '@/composables/useInitials';
 import { toUrl, urlIsActive } from '@/lib/utils';
-import type {NavItem } from '@/types';
+import type { NavItem, PageType } from '@/types';
 import { InertiaLinkProps, Link } from '@inertiajs/vue3';
 import { Menu, Search, UserRound } from 'lucide-vue-next';
 import { computed } from 'vue';
 import SearchOverlay from '@/components/SearchOverlay.vue';
 
-const page = usePage<{
-    menu: MenuType;
-    auth: { user: any };
-    name: string;
-    quote: {
-        message: string;
-        author: string;
-    };
-    sidebarOpen: boolean;
-    languages: language[];
-}>();
+const page = usePage<PageType>();
 
 function changeLanguage(code: string) {
     const segments = window.location.pathname.split('/').filter(Boolean);
@@ -244,9 +234,7 @@ function toggleSearch() {
                                                             item.slug,
                                                         )
                                                     "
-                                                    >{{
-                                                        item.name
-                                                    }}</a
+                                                    >{{ item.name }}</a
                                                 >
                                             </NavigationMenuLink>
                                         </li>
@@ -270,74 +258,74 @@ function toggleSearch() {
                             />
                         </Button>
 
-                    <DropdownMenu v-if="auth.user">
-                        <DropdownMenuTrigger :as-child="true">
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                class="relative size-10 w-auto rounded-full p-1 focus-within:ring-2 focus-within:ring-primary"
-                            >
-                                <Avatar
-                                    class="size-8 overflow-hidden rounded-full"
-                                >
-                                    <AvatarImage
-                                        v-if="auth.user.avatar"
-                                        :src="auth.user.avatar"
-                                        :alt="auth.user.name"
-                                    />
-                                    <AvatarFallback
-                                        class="rounded-lg bg-neutral-200 font-semibold text-black dark:bg-neutral-700 dark:text-white"
-                                    >
-                                        {{ getInitials(auth.user?.name) }}
-                                    </AvatarFallback>
-                                </Avatar>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" class="w-56">
-                            <UserMenuContent :user="auth.user" />
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                    <Link
-                        v-else
-                        key="login"
-                        :href="route('login')"
-                        class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent"
-                        :class="activeItemStyles(route('login'))"
-                    >
-                        <component :is="UserRound" class="h-5 w-5" />
-                    </Link>
-
-                    <DropdownMenu>
-                        <DropdownMenuTrigger :as-child="true">
-                            <Button
-                                variant="ghost"
-                                size="icon"
-                                class="relative size-10 w-auto cursor-pointer px-3"
-                            >
-                                <Globe />
-                            </Button>
-                        </DropdownMenuTrigger>
-
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                                :as-child="true"
-                                v-for="lang in languages"
-                                :key="lang.code"
-                            >
+                        <DropdownMenu v-if="auth.user">
+                            <DropdownMenuTrigger :as-child="true">
                                 <Button
                                     variant="ghost"
-                                    class="relative w-full justify-start px-3 cursor-pointer"
-                                    @click="changeLanguage(lang.code)"
+                                    size="icon"
+                                    class="relative size-10 w-auto rounded-full p-1 focus-within:ring-2 focus-within:ring-primary"
                                 >
-                                    {{ lang.language }}
+                                    <Avatar
+                                        class="size-8 overflow-hidden rounded-full"
+                                    >
+                                        <AvatarImage
+                                            v-if="auth.user.avatar"
+                                            :src="auth.user.avatar"
+                                            :alt="auth.user.name"
+                                        />
+                                        <AvatarFallback
+                                            class="rounded-lg bg-neutral-200 font-semibold text-black dark:bg-neutral-700 dark:text-white"
+                                        >
+                                            {{ getInitials(auth.user?.name) }}
+                                        </AvatarFallback>
+                                    </Avatar>
                                 </Button>
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" class="w-56">
+                                <UserMenuContent :user="auth.user" />
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        <Link
+                            v-else
+                            key="login"
+                            :href="route('login')"
+                            class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent"
+                            :class="activeItemStyles(route('login'))"
+                        >
+                            <component :is="UserRound" class="h-5 w-5" />
+                        </Link>
+
+                        <DropdownMenu>
+                            <DropdownMenuTrigger :as-child="true">
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    class="relative size-10 w-auto cursor-pointer px-3"
+                                >
+                                    <Globe />
+                                </Button>
+                            </DropdownMenuTrigger>
+
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                    :as-child="true"
+                                    v-for="lang in languages"
+                                    :key="lang.code"
+                                >
+                                    <Button
+                                        variant="ghost"
+                                        class="relative w-full cursor-pointer justify-start px-3"
+                                        @click="changeLanguage(lang.code)"
+                                    >
+                                        {{ lang.language }}
+                                    </Button>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
                 </div>
             </div>
+            <SearchOverlay v-model="searchOpen" />
         </div>
-        <SearchOverlay v-model="searchOpen" />
-    </div>
     </div>
 </template>

@@ -2,18 +2,17 @@
 
 namespace App\Services;
 
-use App\Interfaces\Repositories\ProductRepositoryInterface;
-use App\Interfaces\Services\CollectProductsServiceInterface;
+use App\Interfaces\Services\LookupInterface;
+use App\Models\BodyPart;
 
-class BodyPartsService implements CollectProductsServiceInterface
+class BodyPartsService extends LookupBaseService implements LookupInterface
 {
-    public function __construct(protected ProductRepositoryInterface $collectionRepository){
-
+    public function  __construct(){
+        $this->model = BodyPart::class;
     }
 
-    public function products($option,$filterOptions)
+    public function index()
     {
-        return $this->collectionRepository->queryMenuOption($option);
+        return parent::index();
     }
-
 }

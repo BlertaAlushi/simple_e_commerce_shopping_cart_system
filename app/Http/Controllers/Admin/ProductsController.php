@@ -22,4 +22,6 @@ class ProductsController extends Controller
             'filters' => $request->only('search'),
         ]);
     }
+
+
 }

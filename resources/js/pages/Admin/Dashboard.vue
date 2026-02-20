@@ -28,7 +28,7 @@ defineProps<{
             >
                 <p class="p-2 text-left text-sm">
                     Browse
-                    <a href="/products" class="text-blue-300"> Products </a> and
+                    <a href="/ProductsOld" class="text-blue-300"> Products </a> and
                     order your favorite ones.
                 </p>
                 <p class="p-2">Your orders:</p>

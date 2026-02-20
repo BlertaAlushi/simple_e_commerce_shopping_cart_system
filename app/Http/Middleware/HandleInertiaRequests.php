@@ -49,7 +49,7 @@ class HandleInertiaRequests extends Middleware
 //            return FilterOptionsService::menuOptions();
 //        });
         $menu = FilterOptionsService::menuOptions();
-        $languages = Language::select('code','language')->get();
+        $languages = Language::select('id','code','language')->get();
         return [
             ...parent::share($request),
             'name' => config('app.name'),
