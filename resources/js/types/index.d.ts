@@ -125,3 +125,7 @@ export interface Mark {
     slug: string;
     name: string;
 }
+
+export type ProductType{
+
+}
