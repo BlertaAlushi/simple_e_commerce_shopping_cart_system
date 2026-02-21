@@ -77,7 +77,6 @@ const deleteSelected = (id: number) => {
             </div>
         </div>
 
-        <!-- Table -->
         <div class="rounded-md border">
             <Table>
                 <TableHeader>
@@ -104,7 +103,6 @@ const deleteSelected = (id: number) => {
                         v-for="row in table.getRowModel().rows"
                         :key="row.id"
                     >
-                        <!-- Row selection -->
                         <TableCell
                             v-for="cell in row.getVisibleCells()"
                             :key="cell.id"
@@ -122,7 +120,7 @@ const deleteSelected = (id: number) => {
                                 size="icon"
                                 variant="ghost"
                                 class="group h-9 w-9 cursor-pointer"
-                                @click="editSelected(row.original.slug)"
+                                @click="editSelected(row.original.slug??row.original.code)"
                             >
                                 <Pencil
                                     class="size-5 opacity-80 group-hover:opacity-100"

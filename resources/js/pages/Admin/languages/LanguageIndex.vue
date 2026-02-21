@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AdminLayout.vue';
-import { type BreadcrumbItem, Product } from '@/types';
+import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 import { route } from 'ziggy-js';
@@ -12,32 +12,28 @@ import DataTable from '@/components/DataTable.vue';
 const { t } = useI18n();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: t('home.products'), href: route('admin.products.index') },
+    { title: t('home.languages'), href: route('admin.languages.index') },
 ];
 
 defineProps<{
-    products: {data:Product[]};
+    languages: { id: number; language: string; code: string }[];
 }>();
 
 const columns: ColumnDef<any>[] = [
     { accessorKey: 'id', header: 'ID' },
-    { accessorKey: 'name', header: 'Name' },
-    { accessorKey: 'slug', header: 'Slug' },
-    { accessorKey: 'price', header: 'Price' },
-    { accessorKey: 'currency', header: 'Currency' },
-    { accessorKey: 'stock_quantity', header: 'Stock Quantity' },
-    { accessorKey: 'mark', header: 'Brand' },
+    { accessorKey: 'language', header: 'Language' },
+    { accessorKey: 'code', header: 'Code' },
 ];
 </script>
 
 <template>
-    <Head :title="t('home.products')" />
+    <Head :title="t('home.languages')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <DataTable
-            :table_rows="products.data"
+            :table_rows="languages"
             :columns="columns"
-            page_name="products"
+            page_name="languages"
         />
     </AppLayout>
 </template>

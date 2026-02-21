@@ -9,15 +9,15 @@ import FormEditCreate from '@/components/Forms/FormEditCreate.vue';
 const { t } = useI18n()
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: t('home.body_parts'), href: route('admin.body-parts.create') },
+    { title: t('home.extra'), href: route('admin.extras.create') },
 ]
 
 </script>
 
 <template>
-    <Head :title="t('home.new_body_part')" />
+    <Head :title="t('home.new_extra')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-       <FormEditCreate page_name="body-parts"></FormEditCreate>
+        <FormEditCreate page_name="extras"></FormEditCreate>
     </AppLayout>
 </template>

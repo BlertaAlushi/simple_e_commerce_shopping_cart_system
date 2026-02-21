@@ -14,7 +14,7 @@ const page = usePage<PageType>();
 
 const languages = computed(() => page.props.languages ?? []);
 interface FormData {
-    slug: string;
+    slug?: string;
     name: string;
     translations: Translation[];
 }
@@ -47,7 +47,7 @@ const submit = () => {
     if (isEdit) {
         form.put(route('admin.' + props.page_name + '.update', props.item.id));
     } else {
-        form.post(route('admin.body-parts.store'));
+        form.post(route('admin.'+props.page_name+'.store'));
     }
 };
 </script>

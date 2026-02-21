@@ -2,16 +2,12 @@
 
 namespace App\Services;
 
-use App\Interfaces\Repositories\ProductRepositoryInterface;
+use App\Interfaces\Services\LookupInterface;
+use App\Models\Mark;
 
-class MarksService
+class MarksService extends LookupBaseService implements LookupInterface
 {
-    public function __construct(protected ProductRepositoryInterface $collectionRepository){
-
-    }
-
-    public function products($option,$filterOptions)
-    {
-        // TODO: Implement products() method.
+    public function __construct(){
+        $this->model = Mark::class;
     }
 }

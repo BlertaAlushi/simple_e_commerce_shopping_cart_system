@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { router } from '@inertiajs/vue3';
 import { defineProps, reactive, watch } from 'vue';
-import { type Filters, FilterOptions, FilterOptionItem } from '@/types';
-import { ChevronUp, ChevronDown } from 'lucide-vue-next'
+import {
+    type Filters,
+    MenuType,
+    MenuItem,
+} from '@/types';
+import { ChevronUp, ChevronDown } from 'lucide-vue-next';
 
 const props = defineProps<{
-    filterOptions: FilterOptions;
+    filterOptions: MenuType;
     filters: Filters;
 }>();
 
@@ -40,29 +44,29 @@ type FilterGroupKey = keyof Filters;
 interface FilterGroup {
     key: FilterGroupKey;
     title: string;
-    items: FilterOptionItem[];
+    items: MenuItem[];
 }
 
 const filterGroups: FilterGroup[] = [
     {
         key: 'skin_types',
         title: 'Skin Types',
-        items: props.filterOptions.skinTypes,
+        items: props.filterOptions.skinTypes.data,
     },
     {
         key: 'skin_concerns',
         title: 'Skin Concerns',
-        items: props.filterOptions.skinConcerns,
+        items: props.filterOptions.skinConcerns.data,
     },
     {
         key: 'product_types',
         title: 'Product Types',
-        items: props.filterOptions.productTypes,
+        items: props.filterOptions.productTypes.data,
     },
     {
         key: 'extras',
         title: 'Extras',
-        items: props.filterOptions.extras,
+        items: props.filterOptions.extras.data,
     },
 ];
 </script>
@@ -97,7 +101,7 @@ const filterGroups: FilterGroup[] = [
                             v-model="form[group.key]"
                             class="h-4 w-4 accent-black"
                         />
-                        <span class="text-sm">{{ item.translation.name }}</span>
+                        <span class="text-sm">{{ item.name }}</span>
                     </label>
                 </div>
             </div>

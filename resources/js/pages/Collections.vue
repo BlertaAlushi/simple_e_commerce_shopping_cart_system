@@ -1,35 +1,30 @@
 <script setup lang="ts">
-import { Head } from '@inertiajs/vue3';
+import { Head, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SideBarFilters from '@/components/SideBarFilters.vue';
-import { type Filters, FilterOptions } from '@/types';
+import { type Filters, Product, type PageType } from '@/types';
+
+const page = usePage<PageType>();
 
 const props = defineProps<{
     products: {
-        data:{
-            slug:string;
-
-        }[]
+        data: Product[];
     };
     filters: Filters;
-    filterOptions: FilterOptions;
 }>();
 
-// Destructure to pass to sidebar
-const { products, filters, filterOptions } = props;
+const filterOptions = page.props.menu;
+const { products, filters } = props;
 </script>
 
 <template>
     <Head title="Products" />
     <AppLayout>
         <div class="flex gap-6">
-            <SideBarFilters
-                :filters="filters"
-                :filterOptions="filterOptions"
-            />
+            <SideBarFilters :filters="filters" :filterOptions="filterOptions" />
             <main class="flex-1">
                 <div v-for="product in products.data" :key="product.slug">
-                    {{ product.slug }}
+                    {{ product }}
                 </div>
             </main>
         </div>

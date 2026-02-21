@@ -10,9 +10,4 @@ class BodyPartsService extends LookupBaseService implements LookupInterface
     public function  __construct(){
         $this->model = BodyPart::class;
     }
-
-    public function index()
-    {
-        return parent::index();
-    }
 }

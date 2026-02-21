@@ -27,6 +27,11 @@ const mainNavItems = computed<NavItem[]>(() => [
         icon: LayoutGrid,
     },
     {
+        title: t('home.products'),
+        href: route('admin.products.index'),
+        icon: List,
+    },
+    {
         title: t('home.body_parts'),
         href: route('admin.body-parts.index'),
         icon: List,
@@ -34,6 +39,31 @@ const mainNavItems = computed<NavItem[]>(() => [
     {
         title: t('home.skin_types'),
         href: route('admin.skin-types.index'),
+        icon: List,
+    },
+    {
+        title: t('home.skin_concerns'),
+        href: route('admin.skin-concerns.index'),
+        icon: List,
+    },
+    {
+        title: t('home.product_types'),
+        href: route('admin.product-types.index'),
+        icon: List,
+    },
+    {
+        title: t('home.extra'),
+        href: route('admin.extras.index'),
+        icon: List,
+    },
+    {
+        title: t('home.marks'),
+        href: route('admin.marks.index'),
+        icon: List,
+    },
+    {
+        title: t('home.languages'),
+        href: route('admin.languages.index'),
         icon: List,
     },
 ]);

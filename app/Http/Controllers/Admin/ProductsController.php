@@ -54,7 +54,7 @@ class ProductsController extends Controller
     public function edit(Product $product)
     {
         $product->load('translations:body_part_id,language_id,name');
-        return Inertia::render('admin/products/ProductEdit', ['body_part' => $product]);
+        return Inertia::render('admin/products/ProductEdit', ['product' => $product]);
     }
 
     /**

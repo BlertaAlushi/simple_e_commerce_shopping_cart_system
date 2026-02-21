@@ -4,7 +4,7 @@ namespace App\Services\Products;
 
 use App\Interfaces\Services\ProductsCollectionInterface;
 use App\Models\Product;
-use App\Resources\ProductResource;
+use App\Resources\Products\ProductResource;
 
 class ProductsCollectionService implements ProductsCollectionInterface
 {

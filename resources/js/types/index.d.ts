@@ -41,11 +41,12 @@ export interface User {
 export interface Product {
     id: number;
     name: string;
+    slug:string;
+    description:string;
     price: number;
     currency: string;
     stock_quantity: number;
-    created_at: string;
-    updated_at: string;
+    mark:string;
 }
 
 export interface CartProduct {
@@ -71,21 +72,6 @@ export interface UserCart {
 
 export type BreadcrumbItemType = BreadcrumbItem;
 
-
-export type FilterOptionItem = {
-    id: number;
-    translation :{
-        name:string;
-    }
-};
-
-export interface FilterOptions {
-    skinTypes: FilterOptionItem[];
-    skinConcerns: FilterOptionItem[];
-    productTypes: FilterOptionItem[];
-    extras: FilterOptionItem[];
-}
-
 export interface Filters {
     skin_types: number[];
     skin_concerns: number[];
@@ -94,11 +80,12 @@ export interface Filters {
 }
 
 export interface MenuItem {
+    id:number
     slug: string;
     name: string;
 }
 
-export interface language {
+export interface Language {
     id:number
     code: string;
     language: string;
@@ -109,6 +96,7 @@ export interface MenuType {
     productTypes: MenuData;
     skinTypes: MenuData;
     skinConcerns: MenuData;
+    extras: MenuData;
     marks: MenuData;
 }
 
@@ -118,7 +106,7 @@ interface MenuData{
 
 export interface PageType extends AppPageProps{
     menu: MenuType;
-    languages: language[];
+    languages: Language[];
 }
 
 export interface Item{
@@ -131,4 +119,9 @@ export interface Item{
 export interface Translation{
     language_id:number,
     name:string,
+}
+export interface Mark {
+    id: number;
+    slug: string;
+    name: string;
 }

@@ -9,6 +9,7 @@ use App\Models\ProductType;
 use App\Models\SkinConcern;
 use App\Models\SkinType;
 use App\Services\FilterOptionsService;
+use App\Services\LanguageService;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -49,7 +50,7 @@ class HandleInertiaRequests extends Middleware
 //            return FilterOptionsService::menuOptions();
 //        });
         $menu = FilterOptionsService::menuOptions();
-        $languages = Language::select('id','code','language')->get();
+        $languages = (new LanguageService())->index();
         return [
             ...parent::share($request),
             'name' => config('app.name'),

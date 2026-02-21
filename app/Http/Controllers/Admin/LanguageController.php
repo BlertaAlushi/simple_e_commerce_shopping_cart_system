@@ -4,22 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Interfaces\Services\LookupInterface;
-use App\Models\Mark;
+use App\Models\Language;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
-class MarksController extends Controller
+class LanguageController extends Controller
 {
     public function __construct(
-        protected LookupInterface $lookup,
+        protected LookupInterface $lookup
     ){}
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $marks = $this->lookup->index();
-        return Inertia::render('admin/marks/MarkIndex', ['marks' => $marks]);
+    public function index(){
+        $languages = $this->lookup->index();
+        return Inertia::render('admin/languages/LanguageIndex', ['languages' => $languages]);
     }
 
     /**
@@ -27,7 +23,7 @@ class MarksController extends Controller
      */
     public function create()
     {
-        return Inertia::render('admin/marks/MarkCreate');
+        return Inertia::render('admin/languages/LanguageCreate');
     }
 
     /**
@@ -49,9 +45,9 @@ class MarksController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Mark $mark)
+    public function edit(Language $language)
     {
-        return Inertia::render('admin/marks/MarkEdit', ['mark' => $mark]);
+        return Inertia::render('admin/languages/LanguageEdit', ['language' => $language]);
     }
 
     /**

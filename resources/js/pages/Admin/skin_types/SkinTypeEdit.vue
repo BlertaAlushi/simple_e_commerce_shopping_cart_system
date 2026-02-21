@@ -1,26 +1,31 @@
 <script setup lang="ts">
+import FormEditCreate from '@/components/Forms/FormEditCreate.vue';
 import AppLayout from '@/layouts/AdminLayout.vue';
 import { type BreadcrumbItem, Item } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 import { route } from 'ziggy-js';
-import FormEditCreate from '@/components/Forms/FormEditCreate.vue';
 
 const { t } = useI18n();
 const props = defineProps<{
-    body_part: Item;
+    skin_concern: Item;
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: t('home.body_parts'), href: route('admin.body-parts.edit',props.body_part.slug) },
+    {
+        title: t('home.body_parts'),
+        href: route('admin.skin-concerns.edit', props.skin_concern.slug),
+    },
 ];
-
 </script>
 
 <template>
-    <Head :title="t('home.new_body_part')" />
+    <Head :title="t('home.skin_concern')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <FormEditCreate page_name="body-parts" :item="body_part"></FormEditCreate>
+        <FormEditCreate
+            page_name="skin-concerns"
+            :item="skin_concern"
+        ></FormEditCreate>
     </AppLayout>
 </template>

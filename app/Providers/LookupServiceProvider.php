@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Http\Controllers\Admin\BodyPartsController;
 use App\Http\Controllers\Admin\ExtrasController;
+use App\Http\Controllers\Admin\LanguageController;
 use App\Http\Controllers\Admin\MarksController;
 use App\Http\Controllers\Admin\ProductsController;
 use App\Http\Controllers\Admin\ProductTypesController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\Admin\SkinTypeController;
 use App\Interfaces\Services\LookupInterface;
 use App\Services\BodyPartsService;
 use App\Services\ExtrasService;
+use App\Services\LanguageService;
 use App\Services\MarksService;
 use App\Services\Products\ProductsService;
 use App\Services\ProductTypesService;
@@ -61,5 +63,9 @@ class LookupServiceProvider extends ServiceProvider
         $this->app->when(ProductsController::class)
             ->needs(LookupInterface::class)
             ->give(ProductsService::class);
+
+        $this->app->when(LanguageController::class)
+            ->needs(LookupInterface::class)
+            ->give(LanguageService::class);
     }
 }

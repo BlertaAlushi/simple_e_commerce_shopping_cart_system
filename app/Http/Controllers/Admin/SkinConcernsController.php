@@ -3,8 +3,73 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Interfaces\Services\LookupInterface;
+use App\Models\Product;
+use App\Models\SkinConcern;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class SkinConcernsController extends Controller
 {
-    //
+    public function __construct(
+        protected LookupInterface $lookup
+    ){}
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $skin_concerns = $this->lookup->index();
+        return Inertia::render('admin/skin_concerns/SkinConcernIndex', ['skin_concerns' => $skin_concerns]);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return Inertia::render('admin/skin_concerns/SkinConcernCreate');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(SkinConcern $skinConcern)
+    {
+        $skinConcern->load('translations:skin_concern_id,language_id,name');
+        return Inertia::render('admin/skin_concerns/SkinConcernEdit', ['skin_concern' => $skinConcern]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
+    {
+        //
+    }
 }

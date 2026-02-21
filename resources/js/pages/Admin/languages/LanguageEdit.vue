@@ -1,26 +1,28 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AdminLayout.vue';
-import { type BreadcrumbItem, Item } from '@/types';
+import { type BreadcrumbItem, Language } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 import { route } from 'ziggy-js';
-import FormEditCreate from '@/components/Forms/FormEditCreate.vue';
+import FormLanguage from '@/components/Forms/FormLanguage.vue';
 
 const { t } = useI18n();
 const props = defineProps<{
-    body_part: Item;
+    language: Language;
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: t('home.body_parts'), href: route('admin.body-parts.edit',props.body_part.slug) },
+    {
+        title: t('home.languages'),
+        href: route('admin.languages.edit', props.language.code),
+    },
 ];
-
 </script>
 
 <template>
-    <Head :title="t('home.new_body_part')" />
+    <Head :title="t('home.edit_language')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <FormEditCreate page_name="body-parts" :item="body_part"></FormEditCreate>
+        <FormLanguage page_name="languages" :item="language"></FormLanguage>
     </AppLayout>
 </template>

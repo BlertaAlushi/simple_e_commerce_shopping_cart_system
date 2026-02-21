@@ -36,7 +36,7 @@ class BodyPartsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -61,7 +61,7 @@ class BodyPartsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+       dd($request->all());
     }
 
     /**
