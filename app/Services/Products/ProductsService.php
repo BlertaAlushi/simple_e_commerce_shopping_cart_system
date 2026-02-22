@@ -51,6 +51,7 @@ class ProductsService extends LookupBaseService implements LookupInterface
             'price' => $data['price'],
             'currency' => $data['currency'],
             'mark_id' => $data['mark_id'],
+            'image' => $data['image'],
         ]);
 
         foreach ($data['translations'] as $translation) {

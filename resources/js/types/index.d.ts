@@ -107,6 +107,7 @@ interface MenuData{
 export interface PageType extends AppPageProps{
     menu: MenuType;
     languages: Language[];
+    app_domain:string;
 }
 
 export interface Item{

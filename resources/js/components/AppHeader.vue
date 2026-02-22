@@ -76,7 +76,7 @@ const menu: MenuInterface[] = [
     {
         key: 'skin_concerns',
         title: t('home.skin_concerns'),
-        url: 'collection.skin.conerns',
+        url: 'collection.skin.concerns',
         items: menufilters.value.skinConcerns.data,
     },
     {

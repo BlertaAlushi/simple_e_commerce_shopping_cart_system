@@ -322,13 +322,12 @@ const submit = () => {
         </div>
 
         <div class="space-y-6">
-            <!-- Image -->
             <Card>
                 <CardHeader>
                     <CardTitle>Product Image</CardTitle>
                 </CardHeader>
                 <CardContent class="space-y-4">
-                    <input type="file" @change="handleImage" />
+                    <Input type="file" @change="handleImage" />
                     <img
                         v-if="imagePreview"
                         :src="imagePreview"
