@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MarkRequest;
 use App\Interfaces\Services\LookupInterface;
 use App\Models\Mark;
 use Illuminate\Http\Request;
@@ -33,9 +34,11 @@ class MarksController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(MarkRequest $request)
     {
-        //
+        $data = $request->validated();
+        $this->lookup->store($data);
+        return redirect()->route('admin.marks.index', ['status' => 'success']);
     }
 
     /**
@@ -57,16 +60,19 @@ class MarksController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(MarkRequest $request, Mark $mark)
     {
-        //
+        $data = $request->validated();
+        $this->lookup->update($data,$mark);
+        return redirect()->route('admin.marks.index', ['status' => 'success']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Mark $mark)
     {
-        //
+        $mark->delete();
+        return redirect()->back()->with(['status' => 'success']);
     }
 }

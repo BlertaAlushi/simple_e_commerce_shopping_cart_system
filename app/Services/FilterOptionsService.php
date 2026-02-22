@@ -19,7 +19,7 @@ class FilterOptionsService
             'skinTypes' => MenuResource::collection(SkinType::select('id','slug','name')->with('translation:skin_type_id,name')->get()),
             'skinConcerns' => MenuResource::collection(SkinConcern::select('id','slug','name')->with('translation:skin_concern_id,name')->get()),
             'productTypes' => MenuResource::collection(ProductType::select('id','slug','name')->with('translation:product_type_id,name')->get()),
-            'extras' => MenuResource::collection(Extra::select('id','slug','name')->with('translation:product_type_id,name')->get()),
+            'extras' => MenuResource::collection(Extra::select('id','slug','name')->with('translation:extra_id,name')->get()),
             'marks' => MenuResource::collection(Mark::select('id','slug','name')->get()),
         ];
     }

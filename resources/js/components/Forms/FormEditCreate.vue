@@ -74,7 +74,7 @@ const submit = () => {
                 class="grid w-full max-w-sm items-center gap-1.5"
             >
                 <Label>Slug</Label>
-                <Input v-model="form.slug" type="text" />
+                <Input v-model="form.slug" type="text" disabled />
                 <p v-if="form.errors.slug" class="text-sm text-red-500">
                     {{ form.errors.slug }}
                 </p>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use App\Interfaces\Services\LookupInterface;
 use App\Models\BodyPart;
 use App\Models\Extra;
@@ -34,49 +35,22 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return Inertia::render('admin/products/ProductNew', [
-            'marks' => Mark::all(),
-            'bodyParts' => BodyPart::all(),
-            'productTypes' => ProductType::all(),
-            'skinTypes' => SkinType::all(),
-            'skinConcerns' => SkinConcern::all(),
-            'extras' => Extra::all(),
-        ]);
+        return Inertia::render('admin/products/ProductNew');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $validated = $request->validate([
-            'price' => 'required|numeric',
-            'currency' => 'required|string',
-            'stock_quantity' => 'required|integer',
-            'mark_id' => 'required|exists:marks,id',
-            'image' => 'nullable|image'
-        ]);
-
+        $data = $request->validated();
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->file('image')
-                ->store('products', 'public');
+            $imagePath = $request->file('image')->store('products', 'public');
+            $data['image'] = $imagePath;
         }
 
-        $product = Product::create($validated);
-
-        // translations
-        foreach ($request->translations as $translation) {
-            $product->translations()->create($translation);
-        }
-
-        // sync relations
-        $product->bodyParts()->sync($request->body_parts);
-        $product->productTypes()->sync($request->product_types);
-        $product->skinTypes()->sync($request->skin_types);
-        $product->skinConcerns()->sync($request->skin_concerns);
-        $product->extras()->sync($request->extras);
-
-        return redirect()->route('admin.products.index');
+        $this->lookup->store($data);
+        return redirect()->route('admin.products.index',['status'=>'success']);
     }
 
     /**
@@ -102,48 +76,22 @@ class ProductsController extends Controller
         ]);
         return Inertia::render('admin/products/ProductEdit', [
             'product' => $product,
-            'marks' => Mark::all(),
-            'bodyParts' => BodyPart::all(),
-            'productTypes' => ProductType::all(),
-            'skinTypes' => SkinType::all(),
-            'skinConcerns' => SkinConcern::all(),
-            'extras' => Extra::all(),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        $data = $request->only([
-            'price', 'currency', 'stock_quantity', 'mark_id'
-        ]);
-
+        $data = $request->validated();
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')
-                ->store('products', 'public');
+            $imagePath = $request->file('image')->store('products', 'public');
+            $data['image'] = $imagePath;
         }
 
-        $product->update($data);
-
-        foreach ($request->translations as $translation) {
-            $product->translations()->updateOrCreate(
-                ['language_id' => $translation['language_id']],
-                [
-                    'name' => $translation['name'],
-                    'description' => $translation['description']
-                ]
-            );
-        }
-
-        $product->bodyParts()->sync($request->body_parts);
-        $product->productTypes()->sync($request->product_types);
-        $product->skinTypes()->sync($request->skin_types);
-        $product->skinConcerns()->sync($request->skin_concerns);
-        $product->extras()->sync($request->extras);
-
-        return redirect()->route('admin.products.index');
+        $this->lookup->update($data, $product);
+        return redirect()->route('admin.products.index',['status'=>'success']);
     }
 
     /**

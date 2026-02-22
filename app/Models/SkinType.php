@@ -11,6 +11,7 @@ class SkinType extends Model
 {
     protected $fillable =[
         "name",
+        "slug"
     ];
 
     public function translations(): HasMany{

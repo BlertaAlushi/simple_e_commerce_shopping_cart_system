@@ -17,6 +17,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     <Head :title="t('home.new_mark')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <FormMark page_name="languages"></FormMark>
+        <FormMark page_name="marks"></FormMark>
     </AppLayout>
 </template>

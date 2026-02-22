@@ -119,6 +119,7 @@ export interface Item{
 export interface Translation{
     language_id:number,
     name:string,
+    description?:string
 }
 export interface Mark {
     id: number;
@@ -126,6 +127,20 @@ export interface Mark {
     name: string;
 }
 
-export type ProductType{
-
+export interface ProductForm {
+    id?: number;
+    name: string;
+    slug: string;
+    description: string;
+    price: number;
+    currency: string;
+    stock_quantity: number;
+    mark_id: number| null;
+    image: string | null;
+    translations: Translation[];
+    body_parts: number[];
+    skin_types: number[];
+    skin_concerns: number[];
+    product_types: number[];
+    extras: number[];
 }

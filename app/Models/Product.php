@@ -56,7 +56,7 @@ class Product extends Model
     }
 
     public function skinConcerns(): BelongsToMany{
-        return $this->belongsToMany(SkinConcern::class,'product_skin_type','product_id','skin_concern_id');
+        return $this->belongsToMany(SkinConcern::class,'product_skin_concern','product_id','skin_concern_id');
     }
 
     public function extras(): BelongsToMany{

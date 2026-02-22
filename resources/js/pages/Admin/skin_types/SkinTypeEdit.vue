@@ -8,13 +8,13 @@ import { route } from 'ziggy-js';
 
 const { t } = useI18n();
 const props = defineProps<{
-    skin_concern: Item;
+    skin_type: Item;
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: t('home.body_parts'),
-        href: route('admin.skin-concerns.edit', props.skin_concern.slug),
+        title: t('home.skin_types'),
+        href: route('admin.skin-types.edit', props.skin_type.slug),
     },
 ];
 </script>
@@ -24,8 +24,8 @@ const breadcrumbs: BreadcrumbItem[] = [
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <FormEditCreate
-            page_name="skin-concerns"
-            :item="skin_concern"
+            page_name="skin-types"
+            :item="skin_type"
         ></FormEditCreate>
     </AppLayout>
 </template>

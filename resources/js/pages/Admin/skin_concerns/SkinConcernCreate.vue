@@ -20,6 +20,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     <Head :title="t('home.new_skin_concern')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <FormEditCreate page_name="skin-concern"></FormEditCreate>
+        <FormEditCreate page_name="skin-concerns"></FormEditCreate>
     </AppLayout>
 </template>

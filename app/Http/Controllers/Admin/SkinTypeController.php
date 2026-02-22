@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FilterRequest;
 use App\Interfaces\Services\LookupInterface;
 use App\Models\SkinType;
 use Illuminate\Http\Request;
@@ -30,9 +31,11 @@ class SkinTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(FilterRequest $request)
     {
-        //
+        $data = $request->validated();
+        $this->lookup->store($data);
+        return redirect()->route('admin.skin-types.index', ['status' => 'success']);
     }
 
     /**
@@ -55,16 +58,19 @@ class SkinTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(FilterRequest $request, SkinType $skinType)
     {
-        //
+        $data = $request->validated();
+        $this->lookup->update($data, $skinType);
+        return redirect()->route('admin.skin-types.index', ['status' => 'success']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SkinType $skinType)
     {
-        //
+        $skinType->delete();
+        return redirect()->back()->with(['status' => 'success']);
     }
 }

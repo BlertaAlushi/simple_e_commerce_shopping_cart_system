@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FilterRequest;
 use App\Interfaces\Services\LookupInterface;
 use App\Models\BodyPart;
 use Illuminate\Http\Request;
@@ -34,9 +35,11 @@ class BodyPartsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(FilterRequest $request)
     {
-        dd($request->all());
+        $data = $request->validated();
+        $this->lookup->store($data);
+        return redirect()->route('admin.body-parts.index', ['status' => 'success']);
     }
 
     /**
@@ -59,16 +62,19 @@ class BodyPartsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(FilterRequest $request, BodyPart $bodyPart)
     {
-       dd($request->all());
+        $data = $request->validated();
+        $this->lookup->update($data, $bodyPart);
+        return redirect()->route('admin.body-parts.index', ['status' => 'success']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(BodyPart $bodyPart)
     {
-        //
+        $bodyPart->delete();
+        return redirect()->back()->with(['status' => 'success']);
     }
 }

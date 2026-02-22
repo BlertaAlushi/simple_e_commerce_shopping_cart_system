@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FilterRequest;
 use App\Interfaces\Services\LookupInterface;
 use App\Models\ProductType;
 use Illuminate\Http\Request;
@@ -29,9 +30,11 @@ class ProductTypesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(FilterRequest $request)
     {
-        //
+        $data = $request->validated();
+        $this->lookup->store($data);
+        return redirect()->route('admin.product-types.index', ['status' => 'success']);
     }
 
     /**
@@ -54,15 +57,19 @@ class ProductTypesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(FilterRequest $request, ProductType $productType)
     {
-        //
+        $data = $request->validated();
+        $this->lookup->update($data, $productType);
+        return redirect()->route('admin.product-types.index', ['status' => 'success']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(ProductType $productType)
     {
+        $productType->delete();
+        return redirect()->back()->with(['status' => 'success']);
     }
 }

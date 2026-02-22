@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useForm, usePage } from '@inertiajs/vue3';
+import { route } from 'ziggy-js';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -13,30 +14,36 @@ import {
     SelectItem,
 } from '@/components/ui/select';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { PageType } from '@/types';
+import { PageType, ProductForm } from '@/types';
+import { Label } from '@/components/ui/label';
 
 const page = usePage<PageType>();
 
 const languages = computed(() => page.props.languages ?? []);
 const filters = computed(() => page.props.menu ?? []);
 
-const props = defineProps({
-    product: Object,
-    isEdit: Boolean,
-});
+const props = defineProps<{
+    product?: ProductForm;
+}>();
 
-const imagePreview = ref(props.product?.image_url || null);
+const isEdit = !!props.product?.id;
 
-const form = useForm({
-    price: props.product?.price || '',
-    currency: props.product?.currency || 'USD',
-    stock_quantity: props.product?.stock_quantity || '',
-    mark_id: props.product?.mark_id || '',
-    image: null,
+const imagePreview = ref(props.product?.image || null);
+
+const form = useForm<ProductForm>({
+    name: props.product?.name || '',
+    slug: props.product?.slug || '',
+    description: props.product?.description || '',
+
+    price: props.product?.price || 0,
+    currency: props.product?.currency || 'EUR',
+    stock_quantity: props.product?.stock_quantity || 0,
+    mark_id: props.product?.mark_id || null,
+    image: props.product?.image || null,
 
     translations: languages.value.map((lang) => {
         const existing = props.product?.translations?.find(
-            (t:any) => t.language_id === lang.id,
+            (t: any) => t.language_id === lang.id,
         );
 
         return {
@@ -46,41 +53,109 @@ const form = useForm({
         };
     }),
 
-    body_parts: props.product?.body_parts?.map((i:any) => i.id) || [],
-    product_types: props.product?.product_types?.map((i:any) => i.id) || [],
-    skin_types: props.product?.skin_types?.map((i:any) => i.id) || [],
-    skin_concerns: props.product?.skin_concerns?.map((i:any) => i.id) || [],
-    extras: props.product?.extras?.map((i:any) => i.id) || [],
+    body_parts: props.product?.body_parts?.map((i: any) => i.id) || [],
+    product_types: props.product?.product_types?.map((i: any) => i.id) || [],
+    skin_types: props.product?.skin_types?.map((i: any) => i.id) || [],
+    skin_concerns: props.product?.skin_concerns?.map((i: any) => i.id) || [],
+    extras: props.product?.extras?.map((i: any) => i.id) || [],
 });
 
-const handleImage = (e) => {
+const handleImage = (e: any) => {
     const file = e.target.files[0];
     form.image = file;
     imagePreview.value = URL.createObjectURL(file);
 };
 
-const toggleArray = (array, id) => {
-    if (array.includes(id)) {
-        return array.filter((i) => i !== id);
-    }
-    return [...array, id];
-};
-
 const submit = () => {
     form.post(
-        props.isEdit
-            ? route('products.update', props.product.id)
-            : route('products.store'),
+        isEdit
+            ? route('admin.products.update', props.product.id)
+            : route('admin.products.store'),
         { forceFormData: true },
     );
 };
 </script>
 
 <template>
-    <form @submit.prevent="submit" class="grid grid-cols-3 gap-6">
+    <form
+        @submit.prevent="submit"
+        class="mx-auto grid w-full grid-cols-3 gap-6 p-10"
+    >
         <!-- LEFT SIDE -->
         <div class="col-span-2 space-y-6">
-            <!-- Translations -->
+            <Card>
+                <CardHeader>
+                    <CardTitle> Product </CardTitle>
+                </CardHeader>
+                <CardContent class="grid grid-cols-2 gap-4">
+                    <div class="grid w-full max-w-sm items-center gap-1.5">
+                        <Label>Default Name</Label>
+                        <Input v-model="form.name" type="text" />
+                        <p v-if="form.errors.name" class="text-sm text-red-500">
+                            {{ form.errors.name }}
+                        </p>
+                    </div>
+
+                    <div class="grid w-full max-w-sm items-center gap-1.5">
+                        <Label>Default Description</Label>
+                        <Textarea
+                            v-model="form.description"
+                            class="min-h-30"
+                            placeholder="Description"
+                        />
+                        <p
+                            v-if="form.errors.description"
+                            class="text-sm text-red-500"
+                        >
+                            {{ form.errors.description }}
+                        </p>
+                    </div>
+
+                    <div
+                        v-if="product?.id"
+                        class="grid w-full max-w-sm items-center gap-1.5"
+                    >
+                        <Label>Slug</Label>
+                        <Input v-model="form.slug" type="text" disabled />
+                        <p v-if="form.errors.slug" class="text-sm text-red-500">
+                            {{ form.errors.slug }}
+                        </p>
+                    </div>
+
+                    <div class="grid w-full max-w-sm items-center gap-1.5">
+                        <Label>Stock Quantity</Label>
+                        <Input v-model="form.stock_quantity" type="number" />
+                        <p
+                            v-if="form.errors.stock_quantity"
+                            class="text-sm text-red-500"
+                        >
+                            {{ form.errors.stock_quantity }}
+                        </p>
+                    </div>
+
+                    <div class="grid w-full max-w-sm items-center gap-1.5">
+                        <Label>Price</Label>
+                        <Input v-model="form.price" type="number" />
+                        <p
+                            v-if="form.errors.price"
+                            class="text-sm text-red-500"
+                        >
+                            {{ form.errors.price }}
+                        </p>
+                    </div>
+
+                    <div class="grid w-full max-w-sm items-center gap-1.5">
+                        <Label>Currency</Label>
+                        <Input v-model="form.currency" type="text" />
+                        <p
+                            v-if="form.errors.currency"
+                            class="text-sm text-red-500"
+                        >
+                            {{ form.errors.currency }}
+                        </p>
+                    </div>
+                </CardContent>
+            </Card>
             <Card>
                 <CardHeader>
                     <CardTitle>Translations</CardTitle>
@@ -107,12 +182,32 @@ const submit = () => {
                                 v-model="form.translations[index].name"
                                 :placeholder="`Name (${lang.code})`"
                             />
+                            <p
+                                v-if="form.errors[`translations.${index}.name`]"
+                                class="text-sm text-red-500"
+                            >
+                                {{ form.errors[`translations.${index}.name`] }}
+                            </p>
 
                             <Textarea
                                 v-model="form.translations[index].description"
-                                class="min-h-[120px]"
+                                class="min-h-30"
                                 :placeholder="`Description (${lang.code})`"
                             />
+                            <p
+                                v-if="
+                                    form.errors[
+                                        `translations.${index}.description`
+                                    ]
+                                "
+                                class="text-sm text-red-500"
+                            >
+                                {{
+                                    form.errors[
+                                        `translations.${index}.description`
+                                    ]
+                                }}
+                            </p>
                         </TabsContent>
                     </Tabs>
                 </CardContent>
@@ -124,26 +219,108 @@ const submit = () => {
                     <CardTitle>Relations</CardTitle>
                 </CardHeader>
                 <CardContent class="grid grid-cols-2 gap-4">
-                    <div v-for="item in bodyParts" :key="item.id">
-                        <label class="flex items-center gap-2">
-                            <input
-                                type="checkbox"
-                                :checked="form.body_parts.includes(item.id)"
-                                @change="
-                                    form.body_parts = toggleArray(
-                                        form.body_parts,
-                                        item.id,
-                                    )
-                                "
-                            />
-                            {{ item.name }}
-                        </label>
+                    <!-- Body Parts -->
+                    <div class="grid w-full max-w-sm items-center gap-1.5">
+                        <Label>Body Parts</Label>
+                        <Select v-model="form.body_parts" multiple>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Body Parts" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem
+                                    v-for="item in filters.bodyParts.data"
+                                    :key="item.id"
+                                    :value="item.id"
+                                >
+                                    {{ item.name }}
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <!-- Product Types -->
+                    <div class="grid w-full max-w-sm items-center gap-1.5">
+                        <Label>Product Types</Label>
+                        <Select v-model="form.product_types" multiple>
+                            <SelectTrigger>
+                                <SelectValue
+                                    placeholder="Select Product Types"
+                                />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem
+                                    v-for="item in filters.productTypes.data"
+                                    :key="item.id"
+                                    :value="item.id"
+                                >
+                                    {{ item.name }}
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <!-- Skin Types -->
+                    <div class="grid w-full max-w-sm items-center gap-1.5">
+                        <Label>Skin Types</Label>
+                        <Select v-model="form.skin_types" multiple>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Skin Types" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem
+                                    v-for="item in filters.skinTypes.data"
+                                    :key="item.id"
+                                    :value="item.id"
+                                >
+                                    {{ item.name }}
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <!-- Skin Concerns -->
+                    <div class="grid w-full max-w-sm items-center gap-1.5">
+                        <Label>Skin Concerns</Label>
+                        <Select v-model="form.skin_concerns" multiple>
+                            <SelectTrigger>
+                                <SelectValue
+                                    placeholder="Select Skin Concerns"
+                                />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem
+                                    v-for="item in filters.skinConcerns.data"
+                                    :key="item.id"
+                                    :value="item.id"
+                                >
+                                    {{ item.name }}
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
+                    <!-- Extras -->
+                    <div class="grid w-full max-w-sm items-center gap-1.5">
+                        <Label>Extras</Label>
+                        <Select v-model="form.extras" multiple>
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select Extras" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem
+                                    v-for="item in filters.extras.data"
+                                    :key="item.id"
+                                    :value="item.id"
+                                >
+                                    {{ item.name }}
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
                 </CardContent>
             </Card>
         </div>
 
-        <!-- RIGHT SIDE -->
         <div class="space-y-6">
             <!-- Image -->
             <Card>
@@ -158,26 +335,9 @@ const submit = () => {
                         class="w-full rounded-lg border"
                         alt="Product Image"
                     />
-                </CardContent>
-            </Card>
-
-            <!-- Pricing -->
-            <Card>
-                <CardHeader>
-                    <CardTitle>Pricing</CardTitle>
-                </CardHeader>
-                <CardContent class="space-y-4">
-                    <Input
-                        type="number"
-                        v-model="form.price"
-                        placeholder="Price"
-                    />
-                    <Input v-model="form.currency" placeholder="Currency" />
-                    <Input
-                        type="number"
-                        v-model="form.stock_quantity"
-                        placeholder="Stock"
-                    />
+                    <p v-if="form.errors.image" class="text-sm text-red-500">
+                        {{ form.errors.image }}
+                    </p>
                 </CardContent>
             </Card>
 
@@ -193,7 +353,7 @@ const submit = () => {
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem
-                                v-for="mark in marks"
+                                v-for="mark in filters.marks.data"
                                 :key="mark.id"
                                 :value="mark.id"
                             >
@@ -201,12 +361,21 @@ const submit = () => {
                             </SelectItem>
                         </SelectContent>
                     </Select>
+                    <p v-if="form.errors.mark_id" class="text-sm text-red-500">
+                        {{ form.errors.mark_id }}
+                    </p>
                 </CardContent>
             </Card>
 
-            <Button class="w-full" :disabled="form.processing">
-                {{ isEdit ? 'Update Product' : 'Create Product' }}
-            </Button>
+            <div class="flex justify-end">
+                <Button
+                    @click="submit"
+                    :disabled="form.processing"
+                    class="cursor:pointer"
+                >
+                    {{ isEdit ? 'Update' : 'Create' }}
+                </Button>
+            </div>
         </div>
     </form>
 </template>

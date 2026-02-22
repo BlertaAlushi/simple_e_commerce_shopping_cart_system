@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AdminLayout.vue';
-import { type BreadcrumbItem, Item } from '@/types';
+import { type BreadcrumbItem, ProductForm } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 import { route } from 'ziggy-js';
@@ -21,6 +21,6 @@ const breadcrumbs: BreadcrumbItem[] = [
     <Head :title="t('home.edit_product')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
-        <FormCreateEditProduct></FormCreateEditProduct>
+        <FormCreateEditProduct :product="product"></FormCreateEditProduct>
     </AppLayout>
 </template>

@@ -18,7 +18,7 @@ Route::prefix('/admin')->middleware(['auth', 'isAdmin'])->name('admin.')->group(
     Route::get('/products/create', [ProductsController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductsController::class, 'store'])->name('products.store');
     Route::get('/products/{product:slug}/edit', [ProductsController::class, 'edit'])->name('products.edit');
-    Route::patch('/products/{product}', [ProductsController::class, 'update'])->name('products.update');
+    Route::post('/products/{product}', [ProductsController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductsController::class, 'destroy'])->name('products.destroy');
 
 //    Route::get('/cart', [CartController::class, 'index'])->name('cart');
@@ -52,28 +52,28 @@ Route::prefix('/admin')->middleware(['auth', 'isAdmin'])->name('admin.')->group(
     Route::get('/product-types/create',[ProductTypesController::class, 'create'])->name('product-types.create');
     Route::post('/product-types',[ProductTypesController::class, 'store'])->name('product-types.store');
     Route::get('/product-types/{productType:slug}/edit', [ProductTypesController::class, 'edit'])->name('product-types.edit');
-    Route::patch('/product-types/{productType}', [ProductTypesController::class, 'update'])->name('product-types.update');
+    Route::put('/product-types/{productType}', [ProductTypesController::class, 'update'])->name('product-types.update');
     Route::delete('/product-types/{productType}', [ProductTypesController::class, 'destroy'])->name('product-types.destroy');
 
     Route::get('/extras',[ExtrasController::class, 'index'])->name('extras.index');
     Route::get('/extras/create',[ExtrasController::class, 'create'])->name('extras.create');
     Route::post('/extras',[ExtrasController::class, 'store'])->name('extras.store');
     Route::get('/extras/{extra:slug}/edit', [ExtrasController::class, 'edit'])->name('extras.edit');
-    Route::patch('/extras/{extra}', [ExtrasController::class, 'update'])->name('extras.update');
+    Route::put('/extras/{extra}', [ExtrasController::class, 'update'])->name('extras.update');
     Route::delete('/extras/{extra}', [ExtrasController::class, 'destroy'])->name('extras.destroy');
 
     Route::get('/marks',[MarksController::class, 'index'])->name('marks.index');
     Route::get('/marks/create',[MarksController::class, 'create'])->name('marks.create');
     Route::post('/marks',[MarksController::class, 'store'])->name('marks.store');
     Route::get('/marks/{mark:slug}/edit', [MarksController::class, 'edit'])->name('marks.edit');
-    Route::patch('/marks/{mark}', [MarksController::class, 'update'])->name('marks.update');
+    Route::put('/marks/{mark}', [MarksController::class, 'update'])->name('marks.update');
     Route::delete('/marks/{mark}', [MarksController::class, 'destroy'])->name('marks.destroy');
 
     Route::get('/languages',[LanguageController::class, 'index'])->name('languages.index');
     Route::get('/language',[LanguageController::class, 'create'])->name('languages.create');
     Route::post('/language',[LanguageController::class, 'store'])->name('languages.store');
     Route::get('/language/{language:code}/edit', [LanguageController::class, 'edit'])->name('languages.edit');
-    Route::patch('/language/{language}', [LanguageController::class, 'update'])->name('languages.update');
+    Route::put('/language/{language}', [LanguageController::class, 'update'])->name('languages.update');
     Route::delete('/language/{language}', [LanguageController::class, 'destroy'])->name('languages.destroy');
 
 });

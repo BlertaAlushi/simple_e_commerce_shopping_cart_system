@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FilterRequest;
 use App\Interfaces\Services\LookupInterface;
 use App\Models\Product;
 use App\Models\SkinConcern;
@@ -35,9 +36,11 @@ class SkinConcernsController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(FilterRequest $request)
     {
-        //
+        $data = $request->validated();
+        $this->lookup->store($data);
+        return redirect()->route('admin.skin-concerns.index', ['status' => 'success']);
     }
 
     /**
@@ -60,16 +63,20 @@ class SkinConcernsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(FilterRequest $request, SkinConcern $skinConcern)
     {
-        //
+        $data = $request->validated();
+        $this->lookup->update($data, $skinConcern);
+        return redirect()->route('admin.skin-concerns.index', ['status' => 'success']);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(SkinConcern $skinConcern)
     {
-        //
+        $skinConcern->delete();
+        return redirect()->back()->with(['status' => 'success']);
+
     }
 }
