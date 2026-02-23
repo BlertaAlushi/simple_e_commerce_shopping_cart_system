@@ -16,6 +16,9 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { PageType, ProductForm } from '@/types';
 import { Label } from '@/components/ui/label';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const page = usePage<PageType>();
 
@@ -85,11 +88,11 @@ const submit = () => {
         <div class="col-span-2 space-y-6">
             <Card>
                 <CardHeader>
-                    <CardTitle> Product </CardTitle>
+                    <CardTitle> {{ t('admin.product') }} </CardTitle>
                 </CardHeader>
                 <CardContent class="grid grid-cols-2 gap-4">
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <Label>Default Name</Label>
+                        <Label>{{ t('admin.default_name') }}</Label>
                         <Input v-model="form.name" type="text" />
                         <p v-if="form.errors.name" class="text-sm text-red-500">
                             {{ form.errors.name }}
@@ -97,7 +100,7 @@ const submit = () => {
                     </div>
 
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <Label>Default Description</Label>
+                        <Label>{{ t('admin.default_description') }}</Label>
                         <Textarea
                             v-model="form.description"
                             class="min-h-30"
@@ -115,7 +118,7 @@ const submit = () => {
                         v-if="product?.id"
                         class="grid w-full max-w-sm items-center gap-1.5"
                     >
-                        <Label>Slug</Label>
+                        <Label>{{ t('admin.slug') }}</Label>
                         <Input v-model="form.slug" type="text" disabled />
                         <p v-if="form.errors.slug" class="text-sm text-red-500">
                             {{ form.errors.slug }}
@@ -123,7 +126,7 @@ const submit = () => {
                     </div>
 
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <Label>Stock Quantity</Label>
+                        <Label>{{ t('admin.stock_quantity') }}</Label>
                         <Input v-model="form.stock_quantity" type="number" />
                         <p
                             v-if="form.errors.stock_quantity"
@@ -134,7 +137,7 @@ const submit = () => {
                     </div>
 
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <Label>Price</Label>
+                        <Label>{{ t('admin.price') }}</Label>
                         <Input v-model="form.price" type="number" />
                         <p
                             v-if="form.errors.price"
@@ -145,7 +148,7 @@ const submit = () => {
                     </div>
 
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <Label>Currency</Label>
+                        <Label>{{ t('admin.currency') }}</Label>
                         <Input v-model="form.currency" type="text" />
                         <p
                             v-if="form.errors.currency"
@@ -158,7 +161,7 @@ const submit = () => {
             </Card>
             <Card>
                 <CardHeader>
-                    <CardTitle>Translations</CardTitle>
+                    <CardTitle>{{ t('admin.translations') }}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Tabs default-value="0">
@@ -180,7 +183,7 @@ const submit = () => {
                         >
                             <Input
                                 v-model="form.translations[index].name"
-                                :placeholder="`Name (${lang.code})`"
+                                :placeholder="t('admin.name')"
                             />
                             <p
                                 v-if="form.errors[`translations.${index}.name`]"
@@ -192,7 +195,7 @@ const submit = () => {
                             <Textarea
                                 v-model="form.translations[index].description"
                                 class="min-h-30"
-                                :placeholder="`Description (${lang.code})`"
+                                :placeholder="t('admin.description')"
                             />
                             <p
                                 v-if="
@@ -216,15 +219,21 @@ const submit = () => {
             <!-- Relations -->
             <Card>
                 <CardHeader>
-                    <CardTitle>Relations</CardTitle>
+                    <CardTitle>{{ t('admin.relations') }}</CardTitle>
                 </CardHeader>
                 <CardContent class="grid grid-cols-2 gap-4">
                     <!-- Body Parts -->
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <Label>Body Parts</Label>
+                        <Label>{{ t('home.body_parts') }}</Label>
                         <Select v-model="form.body_parts" multiple>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select Body Parts" />
+                                <SelectValue
+                                    :placeholder="
+                                        t('admin.select') +
+                                        ' ' +
+                                        t('home.body_parts')
+                                    "
+                                />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem
@@ -240,11 +249,15 @@ const submit = () => {
 
                     <!-- Product Types -->
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <Label>Product Types</Label>
+                        <Label>{{ t('home.product_types') }}</Label>
                         <Select v-model="form.product_types" multiple>
                             <SelectTrigger>
                                 <SelectValue
-                                    placeholder="Select Product Types"
+                                    :placeholder="
+                                        t('admin.select') +
+                                        ' ' +
+                                        t('home.product_types')
+                                    "
                                 />
                             </SelectTrigger>
                             <SelectContent>
@@ -261,10 +274,16 @@ const submit = () => {
 
                     <!-- Skin Types -->
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <Label>Skin Types</Label>
+                        <Label>{{ t('home.skin_types') }}</Label>
                         <Select v-model="form.skin_types" multiple>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select Skin Types" />
+                                <SelectValue
+                                    :placeholder="
+                                        t('admin.select') +
+                                        ' ' +
+                                        t('home.skin_types')
+                                    "
+                                />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem
@@ -280,11 +299,15 @@ const submit = () => {
 
                     <!-- Skin Concerns -->
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <Label>Skin Concerns</Label>
+                        <Label>{{ t('home.skin_concerns') }}</Label>
                         <Select v-model="form.skin_concerns" multiple>
                             <SelectTrigger>
                                 <SelectValue
-                                    placeholder="Select Skin Concerns"
+                                    :placeholder="
+                                        t('admin.select') +
+                                        ' ' +
+                                        t('home.skin_concerns')
+                                    "
                                 />
                             </SelectTrigger>
                             <SelectContent>
@@ -301,10 +324,16 @@ const submit = () => {
 
                     <!-- Extras -->
                     <div class="grid w-full max-w-sm items-center gap-1.5">
-                        <Label>Extras</Label>
+                        <Label>{{ t('home.extra') }}</Label>
                         <Select v-model="form.extras" multiple>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select Extras" />
+                                <SelectValue
+                                    :placeholder="
+                                        t('admin.select') +
+                                        ' ' +
+                                        t('home.extra')
+                                    "
+                                />
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectItem
@@ -324,7 +353,10 @@ const submit = () => {
         <div class="space-y-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>Product Image</CardTitle>
+                    <CardTitle
+                        >{{ t('admin.product') }}
+                        {{ t('admin.image') }}</CardTitle
+                    >
                 </CardHeader>
                 <CardContent class="space-y-4">
                     <Input type="file" @change="handleImage" />
@@ -343,12 +375,14 @@ const submit = () => {
             <!-- Brand -->
             <Card>
                 <CardHeader>
-                    <CardTitle>Brand</CardTitle>
+                    <CardTitle>{{ t('home.brand') }}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <Select v-model="form.mark_id">
                         <SelectTrigger>
-                            <SelectValue placeholder="Select Brand" />
+                            <SelectValue
+                                :placeholder="t('admin.select')+' '+ t('home.brand')"
+                            />
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem
@@ -372,7 +406,7 @@ const submit = () => {
                     :disabled="form.processing"
                     class="cursor:pointer"
                 >
-                    {{ isEdit ? 'Update' : 'Create' }}
+                    {{ isEdit ? t('admin.update') : t('admin.create') }}
                 </Button>
             </div>
         </div>

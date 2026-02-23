@@ -10,14 +10,14 @@ const { t } = useI18n();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: t('home.skin_concerns'),
+        title: t('admin.skin-concerns.new'),
         href: route('admin.skin-concerns.create'),
     },
 ];
 </script>
 
 <template>
-    <Head :title="t('home.new_skin_concern')" />
+    <Head :title="t('admin.skin-concerns.new')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <FormEditCreate page_name="skin-concerns"></FormEditCreate>

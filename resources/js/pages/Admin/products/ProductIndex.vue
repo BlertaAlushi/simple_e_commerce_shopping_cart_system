@@ -16,17 +16,17 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 defineProps<{
-    products: {data:Product[]};
+    products: { data: Product[] };
 }>();
 
 const columns: ColumnDef<any>[] = [
     { accessorKey: 'id', header: 'ID' },
-    { accessorKey: 'name', header: 'Name' },
-    { accessorKey: 'slug', header: 'Slug' },
-    { accessorKey: 'price', header: 'Price' },
-    { accessorKey: 'currency', header: 'Currency' },
-    { accessorKey: 'stock_quantity', header: 'Stock Quantity' },
-    { accessorKey: 'mark', header: 'Brand' },
+    { accessorKey: 'name', header: t('admin.name') },
+    { accessorKey: 'slug', header: t('admin.slug') },
+    { accessorKey: 'price', header: t('admin.price') },
+    { accessorKey: 'currency', header: t('admin.currency') },
+    { accessorKey: 'stock_quantity', header: t('admin.stock_quantity') },
+    { accessorKey: 'mark', header: t('home.brand') },
 ];
 </script>
 

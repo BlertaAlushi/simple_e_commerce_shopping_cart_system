@@ -62,6 +62,10 @@ class HandleInertiaRequests extends Middleware
             'menu' => $menu,
             'languages' => $languages,
             'app_domain'=>config('app.domain'),
+            'flash' => [
+                'success' => $request->session()->get('success'),
+                'error'   => $request->session()->get('error'),
+            ],
         ];
     }
 }

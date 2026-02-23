@@ -13,14 +13,14 @@ const props = defineProps<{
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: t('home.skin_concerns'),
+        title: t('admin.skin-concerns.edit'),
         href: route('admin.skin-concerns.edit', props.skin_concern.slug),
     },
 ];
 </script>
 
 <template>
-    <Head :title="t('home.skin_concern')" />
+    <Head :title="t('admin.skin-concerns.edit')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <FormEditCreate

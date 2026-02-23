@@ -9,8 +9,10 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const page = usePage<PageType>();
+const { t } = useI18n();
 
 const languages = computed(() => page.props.languages ?? []);
 interface FormData {
@@ -47,7 +49,7 @@ const submit = () => {
     if (isEdit) {
         form.put(route('admin.' + props.page_name + '.update', props.item.id));
     } else {
-        form.post(route('admin.'+props.page_name+'.store'));
+        form.post(route('admin.' + props.page_name + '.store'));
     }
 };
 </script>
@@ -56,13 +58,17 @@ const submit = () => {
     <Card class="mx-auto mt-10 w-full max-w-5xl">
         <CardHeader>
             <CardTitle>
-                {{ isEdit ? 'Edit Body Part' : 'Create Body Part' }}
+                {{
+                    isEdit
+                        ? t('admin.' + page_name + '.edit')
+                        : t('admin.' + page_name + '.new')
+                }}
             </CardTitle>
         </CardHeader>
 
         <CardContent class="space-y-6">
             <div class="grid w-full max-w-sm items-center gap-1.5">
-                <Label>Default Name</Label>
+                <Label>{{ t('admin.default_name') }}</Label>
                 <Input v-model="form.name" type="text" />
                 <p v-if="form.errors.name" class="text-sm text-red-500">
                     {{ form.errors.name }}
@@ -73,7 +79,7 @@ const submit = () => {
                 v-if="item?.id"
                 class="grid w-full max-w-sm items-center gap-1.5"
             >
-                <Label>Slug</Label>
+                <Label>{{ t('admin.slug') }}</Label>
                 <Input v-model="form.slug" type="text" disabled />
                 <p v-if="form.errors.slug" class="text-sm text-red-500">
                     {{ form.errors.slug }}
@@ -99,7 +105,7 @@ const submit = () => {
                 >
                     <div class="grid w-full max-w-sm items-center gap-1.5">
                         <Label>
-                            Name ({{
+                            {{ t('admin.name') }} ({{
                                 languages.find(
                                     (l) => l.id === translation.language_id,
                                 )?.language
@@ -119,8 +125,12 @@ const submit = () => {
             </Tabs>
 
             <div class="flex justify-end">
-                <Button @click="submit" :disabled="form.processing" class="cursor:pointer">
-                    {{ isEdit ? 'Update' : 'Create' }}
+                <Button
+                    @click="submit"
+                    :disabled="form.processing"
+                    class="cursor:pointer"
+                >
+                    {{ isEdit ? t('admin.update') : t('admin.create') }}
                 </Button>
             </div>
         </CardContent>

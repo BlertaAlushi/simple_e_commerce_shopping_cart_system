@@ -9,12 +9,12 @@ import { route } from 'ziggy-js';
 const { t } = useI18n();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: t('home.products'), href: route('admin.products.create') },
+    { title: t('admin.products.new'), href: route('admin.products.create') },
 ];
 </script>
 
 <template>
-    <Head :title="t('home.new_product')" />
+    <Head :title="t('admin.products.new')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <FormCreateEditProduct></FormCreateEditProduct>

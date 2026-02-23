@@ -21,8 +21,8 @@ defineProps<{
 
 const columns: ColumnDef<any>[] = [
     { accessorKey: 'id', header: 'ID' },
-    { accessorKey: 'name', header: 'Name' },
-    { accessorKey: 'slug', header: 'Slug' },
+    { accessorKey: 'name', header: t('admin.name') },
+    { accessorKey: 'slug', header: t('admin.slug') },
 ];
 </script>
 

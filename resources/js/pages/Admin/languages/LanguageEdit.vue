@@ -13,14 +13,14 @@ const props = defineProps<{
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: t('home.languages'),
+        title: t('admin.languages.edit'),
         href: route('admin.languages.edit', props.language.code),
     },
 ];
 </script>
 
 <template>
-    <Head :title="t('home.edit_language')" />
+    <Head :title="t('admin.languages.edit')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <FormLanguage page_name="languages" :item="language"></FormLanguage>

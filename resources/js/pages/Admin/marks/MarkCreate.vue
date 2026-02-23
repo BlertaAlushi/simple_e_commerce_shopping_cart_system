@@ -9,12 +9,12 @@ import FormMark from '@/components/Forms/FormMark.vue';
 const { t } = useI18n();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: t('home.marks'), href: route('admin.marks.create') },
+    { title: t('admin.marks.new'), href: route('admin.marks.create') },
 ];
 </script>
 
 <template>
-    <Head :title="t('home.new_mark')" />
+    <Head :title="t('admin.marks.new')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <FormMark page_name="marks"></FormMark>

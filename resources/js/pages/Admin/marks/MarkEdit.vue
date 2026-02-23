@@ -13,14 +13,14 @@ const props = defineProps<{
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: t('home.marks'),
+        title: t('admin.marks.edit'),
         href: route('admin.marks.edit', props.mark.slug),
     },
 ];
 </script>
 
 <template>
-    <Head :title="t('home.edit_mark')" />
+    <Head :title="t('admin.marks.edit')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <FormMark page_name="marks" :item="mark"></FormMark>

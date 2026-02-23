@@ -6,6 +6,8 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 interface FormData {
     code?: string;
     language: string;
@@ -36,23 +38,25 @@ const submit = () => {
     <Card class="mx-auto mt-10 w-full max-w-5xl">
         <CardHeader>
             <CardTitle>
-                {{ isEdit ? 'Edit Body Part' : 'Create Body Part' }}
+                {{
+                    isEdit
+                        ? t('admin.' + page_name + '.edit')
+                        : t('admin.' + page_name + '.new')
+                }}
             </CardTitle>
         </CardHeader>
 
         <CardContent class="space-y-6">
             <div class="grid w-full max-w-sm items-center gap-1.5">
-                <Label>Language</Label>
+                <Label>{{ t('admin.language') }}</Label>
                 <Input v-model="form.language" type="text" />
                 <p v-if="form.errors.language" class="text-sm text-red-500">
                     {{ form.errors.language }}
                 </p>
             </div>
 
-            <div
-                class="grid w-full max-w-sm items-center gap-1.5"
-            >
-                <Label>Code</Label>
+            <div class="grid w-full max-w-sm items-center gap-1.5">
+                <Label>{{ t('admin.code') }}</Label>
                 <Input v-model="form.code" type="text" />
                 <p v-if="form.errors.code" class="text-sm text-red-500">
                     {{ form.errors.code }}
@@ -65,7 +69,7 @@ const submit = () => {
                     :disabled="form.processing"
                     class="cursor:pointer"
                 >
-                    {{ isEdit ? 'Update' : 'Create' }}
+                    {{ isEdit ? t('admin.update') : t('admin.create') }}
                 </Button>
             </div>
         </CardContent>

@@ -12,7 +12,10 @@ import DataTable from '@/components/DataTable.vue';
 const { t } = useI18n();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: t('home.skin_concerns'), href: route('admin.skin-concerns.index') },
+    {
+        title: t('home.skin_concerns'),
+        href: route('admin.skin-concerns.index'),
+    },
 ];
 
 defineProps<{
@@ -21,8 +24,8 @@ defineProps<{
 
 const columns: ColumnDef<any>[] = [
     { accessorKey: 'id', header: 'ID' },
-    { accessorKey: 'name', header: 'Name' },
-    { accessorKey: 'slug', header: 'Slug' },
+    { accessorKey: 'name', header: t('admin.name') },
+    { accessorKey: 'slug', header: t('admin.slug') },
 ];
 </script>
 

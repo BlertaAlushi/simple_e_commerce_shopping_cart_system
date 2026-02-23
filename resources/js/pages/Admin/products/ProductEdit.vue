@@ -13,12 +13,15 @@ const props = defineProps<{
 }>();
 
 const breadcrumbs: BreadcrumbItem[] = [
-    { title: t('home.products'), href: route('admin.products.edit',props.product.slug) },
+    {
+        title: t('admin.products.edit'),
+        href: route('admin.products.edit', props.product.slug),
+    },
 ];
 </script>
 
 <template>
-    <Head :title="t('home.edit_product')" />
+    <Head :title="t('admin.products.edit')" />
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <FormCreateEditProduct :product="product"></FormCreateEditProduct>
