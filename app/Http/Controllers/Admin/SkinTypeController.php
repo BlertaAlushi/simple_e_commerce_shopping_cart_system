@@ -35,7 +35,7 @@ class SkinTypeController extends Controller
     {
         $data = $request->validated();
         $this->lookup->store($data);
-        return redirect()->route('admin.skin-types.index', ['status' => 'success']);
+        return redirect()->route('admin.skin-types.index')->with('success','created_success');
     }
 
     /**
@@ -62,7 +62,7 @@ class SkinTypeController extends Controller
     {
         $data = $request->validated();
         $this->lookup->update($data, $skinType);
-        return redirect()->route('admin.skin-types.index', ['status' => 'success']);
+        return redirect()->route('admin.skin-types.index')->with('success','edited_success');
     }
 
     /**
@@ -71,6 +71,6 @@ class SkinTypeController extends Controller
     public function destroy(SkinType $skinType)
     {
         $skinType->delete();
-        return redirect()->back()->with(['status' => 'success']);
+        return redirect()->back()->with('success','deleted_success');
     }
 }

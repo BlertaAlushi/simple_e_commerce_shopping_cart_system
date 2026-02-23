@@ -5,13 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Interfaces\Services\LookupInterface;
-use App\Models\BodyPart;
-use App\Models\Extra;
-use App\Models\Mark;
 use App\Models\Product;
-use App\Models\ProductType;
-use App\Models\SkinConcern;
-use App\Models\SkinType;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -50,7 +44,7 @@ class ProductsController extends Controller
         }
 
         $this->lookup->store($data);
-        return redirect()->route('admin.products.index',['status'=>'success']);
+        return redirect()->route('admin.products.index')->with('success','created_success');
     }
 
     /**
@@ -91,7 +85,7 @@ class ProductsController extends Controller
         }
 
         $this->lookup->update($data, $product);
-        return redirect()->route('admin.products.index',['status'=>'success']);
+        return redirect()->route('admin.products.index')->with('success','edited_success');
     }
 
     /**
@@ -100,7 +94,7 @@ class ProductsController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
-        return redirect()->back()->with(['status' => 'success']);
+        return redirect()->back()->with('success','deleted_success');
     }
 
 }

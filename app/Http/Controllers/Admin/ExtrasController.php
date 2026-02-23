@@ -34,7 +34,7 @@ class ExtrasController extends Controller
     {
         $data = $request->validated();
         $this->lookup->store($data);
-        return redirect()->route('admin.extras.index', ['status' => 'success']);
+        return redirect()->route('admin.extras.index')->with('success','created_success');
     }
 
     /**
@@ -61,7 +61,7 @@ class ExtrasController extends Controller
     {
         $data = $request->validated();
         $this->lookup->update($data, $extra);
-        return redirect()->route('admin.extras.index', ['status' => 'success']);
+        return redirect()->route('admin.extras.index')->with('success','edited_success');
     }
 
     /**
@@ -70,6 +70,6 @@ class ExtrasController extends Controller
     public function destroy(Extra $extra)
     {
         $extra->delete();
-        return redirect()->back()->with(['status' => 'success']);
+        return redirect()->back()->with('success','deleted_success');
     }
 }

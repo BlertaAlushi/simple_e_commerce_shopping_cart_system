@@ -1,13 +1,6 @@
 <?php
 
 namespace App\Http\Middleware;
-
-use App\Models\BodyPart;
-use App\Models\Language;
-use App\Models\Mark;
-use App\Models\ProductType;
-use App\Models\SkinConcern;
-use App\Models\SkinType;
 use App\Services\FilterOptionsService;
 use App\Services\LanguageService;
 use Illuminate\Foundation\Inspiring;
@@ -64,7 +57,6 @@ class HandleInertiaRequests extends Middleware
             'app_domain'=>config('app.domain'),
             'flash' => [
                 'success' => $request->session()->get('success'),
-                'error'   => $request->session()->get('error'),
             ],
         ];
     }

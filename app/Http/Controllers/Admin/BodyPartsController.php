@@ -39,7 +39,7 @@ class BodyPartsController extends Controller
     {
         $data = $request->validated();
         $this->lookup->store($data);
-        return redirect()->route('admin.body-parts.index', ['status' => 'success']);
+        return redirect()->route('admin.body-parts.index')->with('success','created_success');
     }
 
     /**
@@ -66,7 +66,7 @@ class BodyPartsController extends Controller
     {
         $data = $request->validated();
         $this->lookup->update($data, $bodyPart);
-        return redirect()->route('admin.body-parts.index', ['status' => 'success']);
+        return redirect()->route('admin.body-parts.index')->with('success','edited_success');
     }
 
     /**
@@ -75,6 +75,6 @@ class BodyPartsController extends Controller
     public function destroy(BodyPart $bodyPart)
     {
         $bodyPart->delete();
-        return redirect()->back()->with(['status' => 'success']);
+        return redirect()->back()->with('success','deleted_success');
     }
 }

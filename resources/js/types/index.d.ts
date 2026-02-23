@@ -108,6 +108,9 @@ export interface PageType extends AppPageProps{
     menu: MenuType;
     languages: Language[];
     app_domain:string;
+    flash:{
+        success:string| null;
+    }
 }
 
 export interface Item{

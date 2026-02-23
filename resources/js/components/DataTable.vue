@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { route } from 'ziggy-js';
-import { Trash, Pencil } from 'lucide-vue-next';
+import { Trash, Pencil, CheckCircle } from 'lucide-vue-next';
 
 import {
     ColumnDef,
@@ -24,8 +24,26 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Inertia } from '@inertiajs/inertia';
+import { Alert, AlertTitle } from '@/components/ui/alert';
+import { usePage } from '@inertiajs/vue3';
+import { PageType } from '@/types';
 
 const { t } = useI18n();
+const page = usePage<PageType>();
+
+const showAlert = computed(() => !!page.props.flash.success);
+const message = computed(() => page.props.flash.success);
+watch(
+    () => page.props.flash.success,
+    (val) => {
+        if (val) {
+            setTimeout(() => {
+                page.props.flash.success = null;
+            }, 3000);
+        }
+    },
+    { immediate: true },
+);
 
 const props = defineProps<{
     table_rows: Record<string, any>[]; // any model
@@ -35,7 +53,6 @@ const props = defineProps<{
 
 const globalFilter = ref('');
 
-// Create table instance
 const table = useVueTable({
     data: props.table_rows,
     columns: props.columns,
@@ -52,13 +69,12 @@ const table = useVueTable({
     getPaginationRowModel: getPaginationRowModel(),
 });
 
-// Actions
 const editSelected = (slug: string) => {
     Inertia.get(route('admin.' + props.page_name + '.edit', slug));
 };
 
 const deleteSelected = (id: number) => {
-    if (!confirm('Are you sure you want to delete this?')) return;
+    if (!confirm('Are you sure you want to delete it?')) return;
 
     Inertia.delete(route('admin.' + props.page_name + '.destroy', id));
 };
@@ -66,6 +82,15 @@ const deleteSelected = (id: number) => {
 
 <template>
     <div class="flex flex-col gap-4 p-10">
+        <div v-if="showAlert" class="grid w-full max-w-xl items-start gap-4">
+            <Alert class="rounded-lg border border-green-600 shadow-sm text-green-600">
+                <CheckCircle />
+                <AlertTitle>{{
+                    t('admin.' + page_name + '.' + message)
+                }}</AlertTitle>
+            </Alert>
+        </div>
+
         <div class="mb-2 flex flex-wrap justify-between gap-2">
             <div class="flex gap-2">
                 <Input
@@ -120,7 +145,11 @@ const deleteSelected = (id: number) => {
                                 size="icon"
                                 variant="ghost"
                                 class="group h-9 w-9 cursor-pointer"
-                                @click="editSelected(row.original.slug??row.original.code)"
+                                @click="
+                                    editSelected(
+                                        row.original.slug ?? row.original.code,
+                                    )
+                                "
                             >
                                 <Pencil
                                     class="size-5 opacity-80 group-hover:opacity-100"
@@ -183,7 +212,7 @@ const deleteSelected = (id: number) => {
                 class="cursor-pointer"
                 @click="$inertia.get(route('admin.' + page_name + '.create'))"
             >
-                New
+                {{ t('admin.new') }}
             </Button>
         </div>
     </div>

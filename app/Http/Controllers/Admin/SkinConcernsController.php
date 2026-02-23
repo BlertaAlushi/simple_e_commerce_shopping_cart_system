@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FilterRequest;
 use App\Interfaces\Services\LookupInterface;
-use App\Models\Product;
 use App\Models\SkinConcern;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -40,7 +39,7 @@ class SkinConcernsController extends Controller
     {
         $data = $request->validated();
         $this->lookup->store($data);
-        return redirect()->route('admin.skin-concerns.index', ['status' => 'success']);
+        return redirect()->route('admin.skin-concerns.index')->with('success','created_success');
     }
 
     /**
@@ -67,7 +66,7 @@ class SkinConcernsController extends Controller
     {
         $data = $request->validated();
         $this->lookup->update($data, $skinConcern);
-        return redirect()->route('admin.skin-concerns.index', ['status' => 'success']);
+        return redirect()->route('admin.skin-concerns.index')->with('success','edited_success');
     }
 
     /**
@@ -76,7 +75,7 @@ class SkinConcernsController extends Controller
     public function destroy(SkinConcern $skinConcern)
     {
         $skinConcern->delete();
-        return redirect()->back()->with(['status' => 'success']);
+        return redirect()->back()->with('success','deleted_success');
 
     }
 }

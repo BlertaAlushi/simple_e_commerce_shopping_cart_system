@@ -34,7 +34,7 @@ class ProductTypesController extends Controller
     {
         $data = $request->validated();
         $this->lookup->store($data);
-        return redirect()->route('admin.product-types.index', ['status' => 'success']);
+        return redirect()->route('admin.product-types.index')->with('success','created_success');
     }
 
     /**
@@ -61,7 +61,7 @@ class ProductTypesController extends Controller
     {
         $data = $request->validated();
         $this->lookup->update($data, $productType);
-        return redirect()->route('admin.product-types.index', ['status' => 'success']);
+        return redirect()->route('admin.product-types.index')->with('success','edited_success');
     }
 
     /**
@@ -70,6 +70,6 @@ class ProductTypesController extends Controller
     public function destroy(ProductType $productType)
     {
         $productType->delete();
-        return redirect()->back()->with(['status' => 'success']);
+        return redirect()->back()->with('success','deleted_success');
     }
 }

@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\MarkRequest;
 use App\Interfaces\Services\LookupInterface;
 use App\Models\Mark;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class MarksController extends Controller
@@ -38,7 +37,7 @@ class MarksController extends Controller
     {
         $data = $request->validated();
         $this->lookup->store($data);
-        return redirect()->route('admin.marks.index', ['status' => 'success']);
+        return redirect()->route('admin.marks.index')->with('success','created_success');
     }
 
     /**
@@ -64,7 +63,7 @@ class MarksController extends Controller
     {
         $data = $request->validated();
         $this->lookup->update($data,$mark);
-        return redirect()->route('admin.marks.index', ['status' => 'success']);
+        return redirect()->route('admin.marks.index')->with('success','edited_success');
     }
 
     /**
@@ -73,6 +72,6 @@ class MarksController extends Controller
     public function destroy(Mark $mark)
     {
         $mark->delete();
-        return redirect()->back()->with(['status' => 'success']);
+        return redirect()->back()->with('success','deleted_success');
     }
 }

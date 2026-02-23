@@ -35,7 +35,7 @@ class LanguageController extends Controller
     {
         $data = $request->validated();
         $this->lookup->store($data);
-        return Redirect::route('admin.languages.index',['status'=>'success']);
+        return Redirect::route('admin.languages.index')->with('success','created_success');
     }
 
     /**
@@ -61,7 +61,7 @@ class LanguageController extends Controller
     {
         $data = $request->validated();
         $this->lookup->update($data,$language);
-        return Redirect::route('admin.languages.index',['status'=>'success']);
+        return Redirect::route('admin.languages.index')->with('success','edited_success');
     }
 
     /**
@@ -70,6 +70,6 @@ class LanguageController extends Controller
     public function destroy(Language $language)
     {
         $language->delete();
-        return redirect()->back()->with(['status' => 'success']);
+        return redirect()->back()->with('success','deleted_success');
     }
 }
