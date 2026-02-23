@@ -8,5 +8,14 @@
     "extra": "Extras",
     "products": "Products",
     "languages": "Languages",
-    "brand": "Brand"
+    "brand": "Brand",
+    "order_by": "Order by",
+    "availability": "Availability",
+    "price_high_to_low": "Price, high to low",
+    "price_low_to_high": "Price, low to high",
+    "date_new_to_old": "Date, new to old",
+    "date_old_to_new": "Date, old to new",
+    "show_per_page": "Show/Page",
+    "no_products": "No Products",
+    "no_products_description": "There are no products for filters you selected, filter again."
 }

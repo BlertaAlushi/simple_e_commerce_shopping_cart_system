@@ -31,8 +31,38 @@ class ProductsCollectionService implements ProductsCollectionInterface
             }
         }
 
-        $products = $query->with('translation:product_id,language_id,name,description')->select('id','slug','price','currency')->get();
 
+        switch ($filters['order_by']) {
+            case 'price_high_to_low':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'price_low_to_high':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'date_old_to_new':
+                $query->orderBy('created_at', 'asc');
+                break;
+            case 'availability':
+                $query->orderBy('stock_quantity', 'desc');
+                break;
+                default:
+            $query->orderBy('created_at', 'desc');
+            break;
+
+        }
+
+        $products = $query
+            ->with([
+                'translation:product_id,language_id,name,description',
+                'mark'
+            ])
+            ->select('id', 'slug', 'price', 'currency', 'image', 'mark_id');
+
+        $products = match ($filters['per_page']) {
+            '24' => $products->paginate(24)->withQueryString(),
+            '48' => $products->paginate(48)->withQueryString(),
+            default => $products->paginate(12)->withQueryString(),
+        };
         return ProductResource::collection($products);
     }
 }

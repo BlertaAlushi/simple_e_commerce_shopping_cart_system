@@ -17,6 +17,7 @@ class ProductResource extends JsonResource
             'name' => $this->translation?$this->translation->name:$this->name,
             'description' =>$this->translation?$this->translation->description:$this->description,
             'mark'=>$this->mark?$this->mark->name:"",
+            'image'=>$this->image
         ];
     }
 }

@@ -47,6 +47,7 @@ export interface Product {
     currency: string;
     stock_quantity: number;
     mark:string;
+    image:string,
 }
 
 export interface CartProduct {
@@ -77,6 +78,8 @@ export interface Filters {
     skin_concerns: number[];
     product_types: number[];
     extras: number[];
+    per_page: string | null;
+    order_by: string | null;
 }
 
 export interface MenuItem {

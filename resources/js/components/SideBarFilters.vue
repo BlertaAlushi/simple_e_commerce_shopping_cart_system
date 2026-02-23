@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { router } from '@inertiajs/vue3';
 import { defineProps, reactive, watch } from 'vue';
-import {
-    type Filters,
-    MenuType,
-    MenuItem,
-} from '@/types';
+import { type Filters, MenuType, MenuItem } from '@/types';
 import { ChevronUp, ChevronDown } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
 const props = defineProps<{
     filterOptions: MenuType;
@@ -18,6 +15,8 @@ const form = reactive<Filters>({
     skin_concerns: [...(props.filters.skin_concerns ?? [])],
     product_types: [...(props.filters.product_types ?? [])],
     extras: [...(props.filters.extras ?? [])],
+    order_by: props.filters.order_by ?? null,
+    per_page: props.filters.per_page ?? null,
 });
 
 const openGroups = reactive<Record<keyof Filters, boolean>>({
@@ -25,19 +24,9 @@ const openGroups = reactive<Record<keyof Filters, boolean>>({
     skin_concerns: true,
     product_types: true,
     extras: true,
+    per_page: true,
+    order_by: true,
 });
-
-watch(
-    form,
-    () => {
-        router.get(window.location.pathname, form, {
-            preserveState: true,
-            replace: true,
-            preserveScroll: true,
-        });
-    },
-    { deep: true },
-);
 
 type FilterGroupKey = keyof Filters;
 
@@ -50,29 +39,46 @@ interface FilterGroup {
 const filterGroups: FilterGroup[] = [
     {
         key: 'skin_types',
-        title: 'Skin Types',
+        title: t('home.skin_types'),
         items: props.filterOptions.skinTypes.data,
     },
     {
         key: 'skin_concerns',
-        title: 'Skin Concerns',
+        title: t('home.skin_concerns'),
         items: props.filterOptions.skinConcerns.data,
     },
     {
         key: 'product_types',
-        title: 'Product Types',
+        title: t('home.product_types'),
         items: props.filterOptions.productTypes.data,
     },
     {
         key: 'extras',
-        title: 'Extras',
+        title: t('home.extra'),
         items: props.filterOptions.extras.data,
     },
 ];
+
+const emit = defineEmits<{
+    (e: 'update:filters', value: Partial<Filters>): void;
+}>();
+
+watch(
+    form,
+    () => {
+        emit('update:filters', {
+            skin_types: [...form.skin_types],
+            skin_concerns: [...form.skin_concerns],
+            product_types: [...form.product_types],
+            extras: [...form.extras],
+        });
+    },
+    { deep: true },
+);
 </script>
 
 <template>
-    <aside class="sticky h-screen w-90 shrink-0 overflow-y-auto px-12 py-8">
+    <aside class="sticky h-screen shrink-0 overflow-y-auto">
         <div v-for="group in filterGroups" :key="group.key">
             <div v-if="group.items.length" class="mb-4">
                 <button

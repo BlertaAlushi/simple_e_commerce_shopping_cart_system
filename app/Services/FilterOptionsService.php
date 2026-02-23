@@ -30,6 +30,8 @@ class FilterOptionsService
             'skin_concerns' => $request->skin_concerns ?? [],
             'product_types' => $request->product_types ?? [],
             'extras' => $request->extras ?? [],
+            'per_page'=> $request->per_page ?? null,
+            'order_by'=> $request->order_by ?? null,
         ];
     }
 }
