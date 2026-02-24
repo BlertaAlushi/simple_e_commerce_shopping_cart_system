@@ -114,7 +114,8 @@ export interface PageType extends AppPageProps{
     app_domain:string;
     flash:{
         success:string| null;
-    }
+    };
+    cartProductCount:number;
 }
 
 export interface Item{

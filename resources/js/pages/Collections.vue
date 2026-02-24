@@ -6,6 +6,7 @@ import { type Filters, Product, type PageType } from '@/types';
 import { computed, reactive, ref, watch } from 'vue';
 import { router } from '@inertiajs/vue3';
 import { Ellipsis, Search } from 'lucide-vue-next';
+import { route } from 'ziggy-js'
 import {
     Select,
     SelectContent,
@@ -177,7 +178,7 @@ function toggleSearch() {
                                 as-child
                                 role="listitem"
                             >
-                                <a href="#">
+                                <a :href="route('collection.product',product.slug)">
                                     <ItemHeader>
                                         <img
                                             :src="product.image"

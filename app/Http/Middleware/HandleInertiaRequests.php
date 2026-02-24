@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Middleware;
+use App\Services\CartService;
 use App\Services\FilterOptionsService;
 use App\Services\LanguageService;
 use Illuminate\Foundation\Inspiring;
@@ -44,6 +45,7 @@ class HandleInertiaRequests extends Middleware
 //        });
         $menu = FilterOptionsService::menuOptions();
         $languages = (new LanguageService())->index();
+        $cart_products_count = CartService::cartProductCount();
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -58,6 +60,7 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'success' => $request->session()->get('success'),
             ],
+            'cartProductCount'=>$cart_products_count
         ];
     }
 }

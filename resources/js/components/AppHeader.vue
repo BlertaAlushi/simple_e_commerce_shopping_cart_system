@@ -6,9 +6,8 @@ import { Button } from '@/components/ui/button';
 import { usePage } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 import { useI18n } from 'vue-i18n';
-import { Globe } from 'lucide-vue-next';
+import { Globe, ShoppingBag } from 'lucide-vue-next';
 import { MenuItem } from '@/types';
-import { ref } from 'vue';
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -51,6 +50,7 @@ function changeLanguage(code: string) {
 const { t } = useI18n();
 
 const menufilters = computed(() => page.props.menu);
+const cartProductCount = computed(() => page.props.cartProductCount);
 
 interface MenuInterface {
     key: string;
@@ -240,6 +240,22 @@ const mainNavItems: NavItem[] = [
 
                 <div class="ml-auto flex items-center space-x-2">
                     <div class="relative flex items-center space-x-1">
+                        <Link
+                            key="cart"
+                            :href="route('cart.index')"
+                            class="flex items-center gap-x-3 rounded-lg px-3 py-2 text-sm font-medium hover:bg-accent"
+                            :class="activeItemStyles(route('cart.index'))"
+                        >
+                            <div class="relative">
+                                <component :is="ShoppingBag" class="h-5 w-5" />
+
+                                <span v-if="cartProductCount>0"
+                                    class="absolute -top-2 -right-2 flex h-5 min-w-4.5 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-bold text-white"
+                                >
+                                    {{ cartProductCount }}
+                                </span>
+                            </div>
+                        </Link>
                         <DropdownMenu v-if="auth.user">
                             <DropdownMenuTrigger :as-child="true">
                                 <Button

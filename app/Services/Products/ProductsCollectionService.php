@@ -74,4 +74,17 @@ class ProductsCollectionService implements ProductsCollectionInterface
         };
         return ProductResource::collection($products);
     }
+
+    public function newArrivals()
+    {
+        return ProductResource::collection(
+            Product::with([
+                'translation:product_id,language_id,name,description',
+                'mark'
+            ])
+                ->latest()
+                ->take(9)
+                ->get()
+        );
+    }
 }

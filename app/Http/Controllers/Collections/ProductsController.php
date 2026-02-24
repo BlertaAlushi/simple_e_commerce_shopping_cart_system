@@ -7,9 +7,11 @@ use App\Interfaces\Services\ProductsCollectionInterface;
 use App\Models\BodyPart;
 use App\Models\Extra;
 use App\Models\Mark;
+use App\Models\Product;
 use App\Models\ProductType;
 use App\Models\SkinConcern;
 use App\Models\SkinType;
+use App\Resources\Products\ProductResource;
 use App\Services\FilterOptionsService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -89,5 +91,13 @@ class ProductsController extends Controller
             'filters' => $filters,
             'products' => $products,
         ]);
+    }
+
+    public function product(Product $product){
+        $product->load([
+            'translation:product_id,language_id,name,description',
+            'mark'
+        ]);
+        return Inertia::render('Product', ['product' => new ProductResource($product)]);
     }
 }

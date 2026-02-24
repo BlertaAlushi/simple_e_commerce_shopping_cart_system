@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateCartRequest;
 use App\Jobs\LowStockNotification;
 use App\Models\Cart;
 use App\Models\CartProduct;
 use App\Models\Product;
+use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -14,6 +16,9 @@ use Validator;
 
 class CartController extends Controller
 {
+    public function __construct(
+        protected CartService $cartService,
+    ){}
     public $user, $cart;
     public function index(){
         $this->setUser();
@@ -25,7 +30,12 @@ class CartController extends Controller
         return Inertia::render('Cart', ["user_cart" => $this->cart]);
     }
 
-    public function addToCart(Request $request){
+    public function addToCart(UpdateCartRequest $request){
+        $data = $request->validated();
+        $this->cartService->addToCart($data);
+
+        dd(34);
+
         $validator = Validator::make($request->all(), [
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required',

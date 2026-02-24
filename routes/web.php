@@ -14,4 +14,5 @@ Route::prefix('/collection')->group(function(){
     Route::get('/skin-concerns/{skinConcern:slug}',[ProductsController::class, 'filterBySkinConcern'])->name('collection.skin.concerns');
     Route::get('/product-type/{productType:slug}',[ProductsController::class, 'filterByProductType'])->name('collection.product.types');
     Route::get('/extra/{extra:slug}',[ProductsController::class, 'filterByExtra'])->name('collection.extras');
+    Route::get('/product/{product:slug}',[ProductsController::class, 'product'])->name('collection.product');
 });

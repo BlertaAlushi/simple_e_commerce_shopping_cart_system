@@ -19,5 +19,9 @@
     "no_products": "No Products",
     "no_products_description": "There are no products for filters you selected, filter again.",
     "next": "Next",
-    "previous": "Previous"
+    "previous": "Previous",
+    "product": "Product",
+    "new_arrivals": "New Arrivals",
+    "add_to_cart": "Add to cart",
+    "quantity": "Quantity"
 }
