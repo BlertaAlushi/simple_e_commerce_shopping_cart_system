@@ -84,7 +84,9 @@ const deleteSelected = (id: number) => {
 <template>
     <div class="flex flex-col gap-4 p-10">
         <div v-if="showAlert" class="grid w-full max-w-xl items-start gap-4">
-            <Alert class="rounded-lg border border-green-600 shadow-sm text-green-600">
+            <Alert
+                class="rounded-lg border border-green-600 text-green-600 shadow-sm"
+            >
                 <CheckCircle />
                 <AlertTitle>{{
                     t('admin.' + page_name + '.' + message)
@@ -193,7 +195,7 @@ const deleteSelected = (id: number) => {
                     :disabled="!table.getCanPreviousPage()"
                     @click="table.previousPage()"
                 >
-                    Previous
+                    {{ t('home.previous') }}
                 </Button>
                 <Button
                     size="sm"
@@ -201,7 +203,7 @@ const deleteSelected = (id: number) => {
                     :disabled="!table.getCanNextPage()"
                     @click="table.nextPage()"
                 >
-                    Next
+                    {{ t('home.next') }}
                 </Button>
             </div>
         </div>

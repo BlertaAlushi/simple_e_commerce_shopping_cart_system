@@ -17,5 +17,7 @@
     "date_old_to_new": "Date, old to new",
     "show_per_page": "Show/Page",
     "no_products": "No Products",
-    "no_products_description": "There are no products for filters you selected, filter again."
+    "no_products_description": "There are no products for filters you selected, filter again.",
+    "next": "Next",
+    "previous": "Previous"
 }

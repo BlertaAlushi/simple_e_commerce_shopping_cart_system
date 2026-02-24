@@ -56,7 +56,7 @@ class ProductsCollectionService implements ProductsCollectionInterface
                 'translation:product_id,language_id,name,description',
                 'mark'
             ])
-            ->select('id', 'slug', 'price', 'currency', 'image', 'mark_id');
+            ->select('id', 'slug', 'price', 'currency', 'image', 'mark_id','stock_quantity');
 
         $products = match ($filters['per_page']) {
             '24' => $products->paginate(24)->withQueryString(),

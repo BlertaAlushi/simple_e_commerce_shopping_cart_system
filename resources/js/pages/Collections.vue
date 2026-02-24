@@ -3,8 +3,9 @@ import { Head, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SideBarFilters from '@/components/SideBarFilters.vue';
 import { type Filters, Product, type PageType } from '@/types';
-import { reactive, watch } from 'vue';
+import { computed, reactive, watch } from 'vue';
 import { router } from '@inertiajs/vue3';
+import { Ellipsis } from 'lucide-vue-next';
 import {
     Select,
     SelectContent,
@@ -31,6 +32,7 @@ import {
 } from '@/components/ui/empty';
 
 import { useI18n } from 'vue-i18n';
+import { Button } from '@/components/ui/button';
 
 const page = usePage<PageType>();
 
@@ -39,16 +41,20 @@ const { t } = useI18n();
 const props = defineProps<{
     products: {
         data: Product[];
+        links: any;
         meta: {
-            links:any[]
+            current_page: number;
+            last_page: number;
+            total: number;
+            links: any[];
         };
     };
     filters: Filters;
 }>();
 
-const filterOptions = page.props.menu;
+const products = computed(() => props.products);
 
-const { products } = props;
+const filterOptions = page.props.menu;
 
 const form = reactive<Filters>({
     skin_types: [...(props.filters.skin_types ?? [])],
@@ -171,16 +177,79 @@ watch(
                             </Item>
                         </ItemGroup>
                     </div>
-                    <div class="ml-auto">
-                        <button
-                            v-for="link in props.products.meta.links"
+                    <div class="flex gap-2">
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            :disabled="!products.links.prev"
+                            @click="
+                                products.links.prev &&
+                                router.get(products.links.prev)
+                            "
+                        >
+                            {{ t('home.previous') }}
+                        </Button>
+
+                        <Button
+                            v-if="products.meta.current_page !== 1"
+                            size="sm"
+                            variant="outline"
+                            @click="
+                                products.links.first &&
+                                router.get(products.links.first)
+                            "
+                        >
+                            1
+                        </Button>
+
+                        <Ellipsis v-if="products.meta.current_page > 2" />
+
+                        <div
+                            v-for="link in products.meta.links"
                             :key="link.label"
-                            v-html="link.label"
-                            :disabled="!link.url"
-                            class="rounded border px-3 py-1"
-                            :class="{ 'bg-gray-300': link.active }"
-                            @click="link.url && router.visit(link.url)"
+                        >
+                            <Button
+                                v-if="link.active"
+                                size="sm"
+                                @click="link.url && router.get(link.url)"
+                            >
+                                {{ link.label }}
+                            </Button>
+                        </div>
+
+                        <Ellipsis
+                            v-if="
+                                products.meta.current_page <
+                                products.meta.total - 1
+                            "
                         />
+
+                        <Button
+                            v-if="
+                                products.meta.current_page !==
+                                products.meta.total
+                            "
+                            size="sm"
+                            variant="outline"
+                            @click="
+                                products.links.first &&
+                                router.get(products.links.first)
+                            "
+                        >
+                            {{ products.meta.total }}
+                        </Button>
+
+                        <Button
+                            size="sm"
+                            variant="outline"
+                            :disabled="!products.links.next"
+                            @click="
+                                products.links.next &&
+                                router.get(products.links.next)
+                            "
+                        >
+                            {{ t('home.next') }}
+                        </Button>
                     </div>
                 </div>
                 <div v-else>
