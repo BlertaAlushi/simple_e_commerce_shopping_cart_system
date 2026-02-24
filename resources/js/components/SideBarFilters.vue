@@ -17,6 +17,7 @@ const form = reactive<Filters>({
     extras: [...(props.filters.extras ?? [])],
     order_by: props.filters.order_by ?? null,
     per_page: props.filters.per_page ?? null,
+    search: props.filters.search ?? null,
 });
 
 const openGroups = reactive<Record<keyof Filters, boolean>>({
@@ -26,6 +27,7 @@ const openGroups = reactive<Record<keyof Filters, boolean>>({
     extras: true,
     per_page: true,
     order_by: true,
+    search:true,
 });
 
 type FilterGroupKey = keyof Filters;

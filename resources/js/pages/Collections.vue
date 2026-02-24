@@ -3,9 +3,9 @@ import { Head, usePage } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SideBarFilters from '@/components/SideBarFilters.vue';
 import { type Filters, Product, type PageType } from '@/types';
-import { computed, reactive, watch } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { router } from '@inertiajs/vue3';
-import { Ellipsis } from 'lucide-vue-next';
+import { Ellipsis, Search } from 'lucide-vue-next';
 import {
     Select,
     SelectContent,
@@ -33,6 +33,7 @@ import {
 
 import { useI18n } from 'vue-i18n';
 import { Button } from '@/components/ui/button';
+import SearchOverlay from '@/components/SearchOverlay.vue';
 
 const page = usePage<PageType>();
 
@@ -63,6 +64,7 @@ const form = reactive<Filters>({
     extras: [...(props.filters.extras ?? [])],
     order_by: props.filters.order_by ?? null,
     per_page: props.filters.per_page ?? null,
+    search: props.filters.search ?? null,
 });
 
 watch(
@@ -86,6 +88,12 @@ watch(
     },
     { deep: true },
 );
+
+const searchOpen = ref(!!props.filters.search?.length);
+
+function toggleSearch() {
+    searchOpen.value = !searchOpen.value;
+}
 </script>
 
 <template>
@@ -99,6 +107,16 @@ watch(
             />
             <main class="flex flex-1 flex-col gap-y-10">
                 <div class="ml-auto flex gap-3">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        class="group h-9 w-9 cursor-pointer"
+                        @click="toggleSearch"
+                    >
+                        <Search
+                            class="size-5 opacity-80 group-hover:opacity-100"
+                        />
+                    </Button>
                     <Select v-model="form.order_by">
                         <SelectTrigger class="w-45">
                             <SelectValue :placeholder="t('home.order_by')" />
@@ -144,9 +162,14 @@ watch(
                         </SelectContent>
                     </Select>
                 </div>
-                <div v-if="products.data.length" class="flex flex-col gap-6">
-                    <div class="flex w-full max-w-xl flex-col gap-6">
-                        <ItemGroup class="grid grid-cols-2 gap-4">
+                <SearchOverlay
+                    v-if="searchOpen"
+                    :filters="form"
+                    @update:filters="(update) => Object.assign(form, update)"
+                />
+                <div v-if="products.data.length" class="flex flex-col gap-y-10">
+                    <div class="flex flex-col gap-6">
+                        <ItemGroup class="grid grid-cols-4 gap-6">
                             <Item
                                 v-for="product in products.data"
                                 :key="product.name"
@@ -177,7 +200,7 @@ watch(
                             </Item>
                         </ItemGroup>
                     </div>
-                    <div class="flex gap-2">
+                    <div class="ml-auto flex gap-2">
                         <Button
                             size="sm"
                             variant="outline"
@@ -204,39 +227,41 @@ watch(
 
                         <Ellipsis v-if="products.meta.current_page > 2" />
 
-                        <div
-                            v-for="link in products.meta.links"
-                            :key="link.label"
+                        <Button
+                            size="sm"
+                            @click="
+                                products.meta.links[products.meta.current_page]
+                                    .url &&
+                                router.get(
+                                    products.meta.links[
+                                        products.meta.current_page
+                                    ].url,
+                                )
+                            "
                         >
-                            <Button
-                                v-if="link.active"
-                                size="sm"
-                                @click="link.url && router.get(link.url)"
-                            >
-                                {{ link.label }}
-                            </Button>
-                        </div>
+                            {{ products.meta.current_page }}
+                        </Button>
 
                         <Ellipsis
                             v-if="
                                 products.meta.current_page <
-                                products.meta.total - 1
+                                products.meta.last_page - 1
                             "
                         />
 
                         <Button
                             v-if="
                                 products.meta.current_page !==
-                                products.meta.total
+                                products.meta.last_page
                             "
                             size="sm"
                             variant="outline"
                             @click="
-                                products.links.first &&
-                                router.get(products.links.first)
+                                products.links.last &&
+                                router.get(products.links.last)
                             "
                         >
-                            {{ products.meta.total }}
+                            {{ products.meta.last_page }}
                         </Button>
 
                         <Button

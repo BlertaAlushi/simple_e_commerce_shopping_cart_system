@@ -1,58 +1,48 @@
 <script setup lang="ts">
-import { ref, watch, nextTick, defineProps } from 'vue';
+import {defineProps, reactive } from 'vue';
 import { Search, X } from 'lucide-vue-next';
 import { Button } from '@/components/ui/button';
-import { router } from '@inertiajs/vue3';
 import { Input } from '@/components/ui/input';
+import type { Filters } from '@/types';
 
-const props = defineProps({
-    modelValue: Boolean,
+const props = defineProps<{
+    filters: Filters;
+}>();
+
+const form = reactive<Filters>({
+    skin_types: [...(props.filters.skin_types ?? [])],
+    skin_concerns: [...(props.filters.skin_concerns ?? [])],
+    product_types: [...(props.filters.product_types ?? [])],
+    extras: [...(props.filters.extras ?? [])],
+    order_by: props.filters.order_by ?? null,
+    per_page: props.filters.per_page ?? null,
+    search: props.filters.search ?? null,
 });
 
-const query = ref('');
-const inputRef = ref<HTMLInputElement>();
+const emit = defineEmits<{
+    (e: 'update:filters', value: Partial<Filters>): void;
+}>();
 
-watch(
-    () => props.modelValue,
-    async (val) => {
-        if (val) {
-            await nextTick();
-            inputRef.value?.focus();
-        }
-    },
-);
-
-// Close search row
 function close() {
-    query.value = '';
+    form.search = '';
+    emit('update:filters', {
+        search: form.search,
+    });
 }
 
-function submitSearch() {
-    const trimmedQuery = query.value.trim();
-    if (!trimmedQuery) return;
-
-    // Keep other query params if needed
-    const params: Record<string, string> = { q: trimmedQuery };
-
-    // Sends GET request to current URL with query param
-    router.get(window.location.pathname, params, {
-        preserveState: true,
-        replace: true,
-        preserveScroll: true,
+function doSearch() {
+    emit('update:filters', {
+        search: form.search,
     });
 }
 </script>
 
 <template>
     <transition name="slide-down">
-        <div
-            v-if="modelValue"
-            class="w-full"
-        >
+        <div v-if="form" class="w-full">
             <div class="mx-auto flex w-full max-w-5xl items-center gap-2 p-4">
                 <Input
-                    ref="inputRef"
-                    v-model="query"
+                    v-model="form.search"
                     type="text"
                     placeholder="Search products..."
                 />
@@ -60,7 +50,7 @@ function submitSearch() {
                     variant="ghost"
                     size="icon"
                     class="group h-9 w-9 cursor-pointer"
-                    @click="submitSearch"
+                    @click="doSearch"
                 >
                     <Search class="size-5 opacity-80 group-hover:opacity-100" />
                 </Button>

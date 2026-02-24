@@ -37,9 +37,8 @@ import { getInitials } from '@/composables/useInitials';
 import { toUrl, urlIsActive } from '@/lib/utils';
 import type { NavItem, PageType } from '@/types';
 import { InertiaLinkProps, Link } from '@inertiajs/vue3';
-import { Menu, Search, UserRound } from 'lucide-vue-next';
+import { Menu, UserRound } from 'lucide-vue-next';
 import { computed } from 'vue';
-import SearchOverlay from '@/components/SearchOverlay.vue';
 
 const page = usePage<PageType>();
 
@@ -116,12 +115,6 @@ const mainNavItems: NavItem[] = [
         // icon: LayoutGrid,
     },
 ];
-
-const searchOpen = ref(false);
-
-function toggleSearch() {
-    searchOpen.value = !searchOpen.value;
-}
 </script>
 
 <template>
@@ -247,17 +240,6 @@ function toggleSearch() {
 
                 <div class="ml-auto flex items-center space-x-2">
                     <div class="relative flex items-center space-x-1">
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            class="group h-9 w-9 cursor-pointer"
-                            @click="toggleSearch"
-                        >
-                            <Search
-                                class="size-5 opacity-80 group-hover:opacity-100"
-                            />
-                        </Button>
-
                         <DropdownMenu v-if="auth.user">
                             <DropdownMenuTrigger :as-child="true">
                                 <Button
@@ -325,7 +307,6 @@ function toggleSearch() {
                     </div>
                 </div>
             </div>
-            <SearchOverlay v-model="searchOpen" />
         </div>
     </div>
 </template>

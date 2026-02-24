@@ -19,6 +19,15 @@ class ProductsCollectionService implements ProductsCollectionInterface
     public function products($filters){
         $query = Product::query();
 
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+
+            $query->whereHas('translation', function ($q) use ($search) {
+                $q->where('name', 'like', '%'.$search.'%')
+                    ->orWhere('description', 'like', '%'.$search.'%');
+            });
+        }
+
         foreach ($this->pivotFilters as $filterKey => $relation) {
             if (!empty($filters[$filterKey])) {
                 if($filterKey == 'marks'){

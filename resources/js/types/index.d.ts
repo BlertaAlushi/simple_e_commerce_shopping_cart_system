@@ -80,6 +80,7 @@ export interface Filters {
     extras: number[];
     per_page: string | null;
     order_by: string | null;
+    search:string | '';
 }
 
 export interface MenuItem {
