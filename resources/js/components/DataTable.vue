@@ -24,7 +24,6 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Inertia } from '@inertiajs/inertia';
 import { Alert, AlertTitle } from '@/components/ui/alert';
 import { usePage } from '@inertiajs/vue3';
 import { PageType } from '@/types';
@@ -71,13 +70,13 @@ const table = useVueTable({
 });
 
 const editSelected = (slug: string) => {
-    Inertia.get(route('admin.' + props.page_name + '.edit', slug));
+    router.get(route('admin.' + props.page_name + '.edit', slug));
 };
 
 const deleteSelected = (id: number) => {
     if (!confirm('Are you sure you want to delete it?')) return;
 
-    Inertia.delete(route('admin.' + props.page_name + '.destroy', id));
+    router.delete(route('admin.' + props.page_name + '.destroy', id));
 };
 </script>
 

@@ -46,6 +46,7 @@ class HandleInertiaRequests extends Middleware
         $menu = FilterOptionsService::menuOptions();
         $languages = (new LanguageService())->index();
         $cart_products_count = CartService::cartProductCount();
+        $cart_total_price = CartService::cartTotal();
         return [
             ...parent::share($request),
             'name' => config('app.name'),
@@ -60,7 +61,8 @@ class HandleInertiaRequests extends Middleware
             'flash' => [
                 'success' => $request->session()->get('success'),
             ],
-            'cartProductCount'=>$cart_products_count
+            'cartProductCount'=>$cart_products_count,
+            'cartTotalPrice'=> $cart_total_price,
         ];
     }
 }

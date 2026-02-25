@@ -11,5 +11,6 @@ class OrderProduct extends Model
         'product_id',
         'order_id',
         'quantity',
+        'unit_price',
     ];
 }

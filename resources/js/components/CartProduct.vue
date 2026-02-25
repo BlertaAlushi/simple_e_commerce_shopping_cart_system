@@ -1,49 +1,100 @@
 <script setup lang="ts">
-import { computed, defineEmits, defineProps } from 'vue';
-import { Trash2 } from 'lucide-vue-next';
+import { defineProps, watch } from 'vue';
+import { Trash } from 'lucide-vue-next';
 import { type CartProduct } from '@/types';
+import { router, useForm } from '@inertiajs/vue3';
+import { route } from 'ziggy-js';
+import {
+    NumberField,
+    NumberFieldContent,
+    NumberFieldDecrement,
+    NumberFieldIncrement,
+    NumberFieldInput,
+} from '@/components/ui/number-field';
+import { Button } from '@/components/ui/button';
+import { debounce } from 'lodash-es';
 
 const props = defineProps<{
     cart_product: CartProduct;
 }>();
 
-const emit = defineEmits<{
-    (e: 'removeCartProduct', id: number): void;
-}>();
-
-async function remove() {
-    if (!props.cart_product.id) return;
-    emit('removeCartProduct', props.cart_product.id);
+interface UpdateCartProduct {
+    product_id: number;
+    quantity: number;
 }
-const totalPrice = computed(() => {
-    const total = props.cart_product.quantity * props.cart_product.product.price;
-    return total.toFixed(2);
+
+const form = useForm<UpdateCartProduct>({
+    product_id: props.cart_product.product_id,
+    quantity: props.cart_product.quantity,
 });
+
+const updateQuantity = debounce(() => {
+    if (form.processing) return;
+
+    form.post(route('cart.update', props.cart_product.id), {
+        preserveScroll: true,
+        preserveState: true,
+    });
+}, 400);
+
+watch(() => form.quantity, updateQuantity);
+
+const removeFromCart = () => {
+    router.delete(route('cart.remove', props.cart_product.id));
+};
 </script>
 
 <template>
-    <div
-        class="flex flex-row justify-between gap-2 rounded-xl border border-gray-200 p-4 dark:border-gray-700"
-    >
-        <div>
-            <h3 class="text-md font-semibold text-gray-800 dark:text-gray-200">
-                {{ cart_product.quantity }} x {{ cart_product.product.name }}
-            </h3>
-            <p class="text-sm text-gray-500 dark:text-gray-400">
-                Price: {{ totalPrice }}
-                {{ cart_product.product.currency }}
-            </p>
-        </div>
+    <div class="w-4/5 flex gap-4 border-b border-gray-200 py-8 dark:border-gray-700">
+        <img
+            :src="cart_product.image"
+            :alt="cart_product.name"
+            class="h-36 w-36 rounded-xl object-cover md:h-36 md:w-36"
+        />
 
-        <button
-            @click="remove"
-            class="mt-2 flex cursor-pointer items-center justify-between gap-2 text-red-500 hover:underline dark:text-red-400"
-        >
-            <Trash2 />
-        </button>
+        <div class="flex flex-1 flex-col justify-between">
+            <div>
+                <h3
+                    class="text-sm font-medium text-gray-900 dark:text-gray-100"
+                >
+                    {{ cart_product.name }}
+                </h3>
+                <p class="mt-1 text-sm text-gray-500">
+                    {{ cart_product.price }} {{ cart_product.currency }}
+                </p>
+            </div>
+
+            <div class="mt-4 flex items-center justify-between">
+                <NumberField
+                    id="quantity"
+                    :min="1"
+                    :max="10"
+                    v-model="form.quantity"
+                    class="w-28"
+                >
+                    <NumberFieldContent>
+                        <NumberFieldDecrement />
+                        <NumberFieldInput />
+                        <NumberFieldIncrement />
+                    </NumberFieldContent>
+                </NumberField>
+
+                <p class="text-sm font-semibold">
+                    {{ (form.quantity * cart_product.price).toFixed(2) }}
+                    {{ cart_product.currency }}
+                </p>
+
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    class="h-8 w-8 text-gray-400 hover:text-red-500"
+                    @click="removeFromCart"
+                >
+                    <Trash class="size-4" />
+                </Button>
+            </div>
+        </div>
     </div>
 </template>
 
-<style scoped>
-/* Optional: You can add hover effects or shadows here */
-</style>
+<style scoped></style>

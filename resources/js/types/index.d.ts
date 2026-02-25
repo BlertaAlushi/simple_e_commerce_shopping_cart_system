@@ -52,23 +52,13 @@ export interface Product {
 
 export interface CartProduct {
     id: number;
-    cart_id: number;
-    product_id: number;
-    quantity: number;
-    created_at: string;
-    updated_at: string;
-    product: Product;
-}
-
-export interface UserCart {
-    id: number;
     user_id: number;
-    is_ordered: number;
-    ordered_at: string;
-    created_at: string;
-    updated_at: string;
-    total_price: number | string;
-    products: CartProduct[];
+    product_id: number;
+    name:string;
+    price:number;
+    quantity:number;
+    currency:string;
+    image:string;
 }
 
 export type BreadcrumbItemType = BreadcrumbItem;
@@ -116,6 +106,7 @@ export interface PageType extends AppPageProps{
         success:string| null;
     };
     cartProductCount:number;
+    cartTotalPrice:number;
 }
 
 export interface Item{

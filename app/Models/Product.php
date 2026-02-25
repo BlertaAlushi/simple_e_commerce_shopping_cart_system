@@ -74,7 +74,7 @@ class Product extends Model
     {
         return $this->belongsToMany(Order::class,)
             ->using(OrderProduct::class)
-            ->withPivot('quantity')
+            ->withPivot('quantity','unit_price')
             ->withTimestamps();
     }
 
@@ -83,5 +83,12 @@ class Product extends Model
         return $value
             ? asset('storage/' . $value)
             : null;
+    }
+
+    public function getCurrencyAttribute($value){
+        if($value=="EUR"){
+            return "€";
+        }
+        return $value;
     }
 }
