@@ -23,7 +23,7 @@ import { CheckCircle, AlertCircleIcon } from 'lucide-vue-next';
 
 const { t } = useI18n();
 
-const props = defineProps<{
+defineProps<{
     cartProducts: { data: cart_product[] };
 }>();
 
