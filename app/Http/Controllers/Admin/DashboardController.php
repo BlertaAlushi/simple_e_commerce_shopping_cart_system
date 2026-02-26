@@ -10,8 +10,6 @@ use Inertia\Inertia;
 class DashboardController extends Controller
 {
     public function index(){
-//        $user = User::find(auth()->id());
-//        $orders = $user->carts()->orderBy("id","desc")->get();
-        return Inertia::render('admin/Dashboard',[]);
+        return Inertia::render('admin/Dashboard');
     }
 }

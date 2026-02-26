@@ -22,7 +22,7 @@ const props = defineProps<{
     cartProducts: { data: cart_product[] };
 }>();
 
-const makeOrder = () => {
+const checkOut = () => {
     router.get(route('cart.checkout'));
 };
 </script>
@@ -34,7 +34,7 @@ const makeOrder = () => {
         <div class="w-full p-8 md:p-20">
             <div
                 v-if="props.cartProducts.data.length > 0"
-                class="flex flex-col items-start gap-8 md:flex-row"
+                class="flex flex-col items-start gap-10 md:flex-row"
             >
                 <div class="flex-1 justify-items-center space-y-6">
                     <CartProduct
@@ -47,15 +47,17 @@ const makeOrder = () => {
                 <div
                     class="flex w-full flex-col gap-4 rounded-xl bg-slate-50 p-6 md:w-64 dark:bg-gray-900"
                 >
-                    <p class="text-sm font-semibold">Subtotal</p>
+                    <p class="text-sm font-semibold">
+                        {{ t('home.subtotal') }}
+                    </p>
                     <p class="text-lg font-bold">
                         {{ cartTotalPrice.toFixed(2) }} €
                     </p>
                     <p class="text-sm text-gray-500">
-                        Shipping and taxes will be calculated at checkout
+                        {{ t('home.checkout_description') }}
                     </p>
-                    <Button class="mt-4 w-full" @click="makeOrder">
-                        Checkout
+                    <Button class="mt-4 w-full" @click="checkOut">
+                        {{ t('home.checkout') }}
                     </Button>
                 </div>
             </div>

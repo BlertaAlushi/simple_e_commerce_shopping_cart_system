@@ -44,11 +44,11 @@ const addToCart = () => {
     <AppLayout>
         <div class="min-h-screen bg-slate-50 px-10 py-12">
             <div class="grid grid-cols-1 items-start gap-16 md:grid-cols-2">
-                <div class="rounded-lg bg-white shadow-sm">
+                <div>
                     <img
                         :src="product.data.image"
                         :alt="product.data.name"
-                        class="h-150 w-full rounded-lg object-cover md:h-200"
+                        class="h-150 w-full object-cover md:h-200"
                     />
                 </div>
 

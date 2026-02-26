@@ -31,26 +31,25 @@ class SendDailySalesReportCommand extends Command
      */
     public function handle()
     {
-        $today = Carbon::today();
-        $dailySales = $products = CartProduct::select(
-            'products.name as name',
-            DB::raw('SUM(carts_products.quantity) as quantity'),
-            DB::raw('MAX(products.price) as price'),
-            DB::raw('MAX(products.currency) as currency'),
-            DB::raw('SUM(carts_products.quantity * products.price) as totalprice')
-        )
-            ->join('carts', 'carts_products.cart_id', '=', 'carts.id')
-            ->join('products', 'carts_products.product_id', '=', 'products.id')
-            ->where('carts.is_ordered', true)
-            ->whereDate('carts.ordered_at', Carbon::today())
-            ->groupBy('products.id', 'products.name')
-            ->get();
-
-        $email = "admin@test.com";
-        $admin = User::where('admin', true)->first();
-        if(!empty($admin)){
-            $email = $admin->email;
-        }
-        Mail::to($email)->send(new DailySalesReport($dailySales));
+//        $dailySales = CartProduct::select(
+//            'products.name as name',
+//            DB::raw('SUM(carts_products.quantity) as quantity'),
+//            DB::raw('MAX(products.price) as price'),
+//            DB::raw('MAX(products.currency) as currency'),
+//            DB::raw('SUM(carts_products.quantity * products.price) as totalprice')
+//        )
+//            ->join('carts', 'carts_products.cart_id', '=', 'carts.id')
+//            ->join('products', 'carts_products.product_id', '=', 'products.id')
+//            ->where('carts.is_ordered', true)
+//            ->whereDate('carts.ordered_at', Carbon::today())
+//            ->groupBy('products.id', 'products.name')
+//            ->get();
+//
+//        $email = "admin@test.com";
+//        $admin = User::where('admin', true)->first();
+//        if(!empty($admin)){
+//            $email = $admin->email;
+//        }
+//        Mail::to($email)->send(new DailySalesReport($dailySales));
     }
 }

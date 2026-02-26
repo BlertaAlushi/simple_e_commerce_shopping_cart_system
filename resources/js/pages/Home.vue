@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 import { useI18n } from 'vue-i18n';
 import { Product } from '@/types';
@@ -33,7 +33,7 @@ defineProps<{
     <AppLayout>
         <div
             v-if="new_arrivals.data.length"
-            class="flex flex-col gap-y-10 p-10 min-h-screen bg-slate-50"
+            class="flex min-h-screen flex-col gap-y-10 bg-slate-50 p-10"
         >
             <div class="space-y-2 text-center">
                 <p class="text-2xl font-medium tracking-tight">
@@ -71,6 +71,12 @@ defineProps<{
                     </Item>
                 </ItemGroup>
             </div>
+            <Link
+                :href="route('collection.all')"
+                class="font-medium tracking-tight text-center"
+            >
+                Shop all products
+            </Link>
         </div>
         <div v-else>
             <Empty

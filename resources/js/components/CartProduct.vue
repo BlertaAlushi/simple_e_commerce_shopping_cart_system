@@ -45,11 +45,11 @@ const removeFromCart = () => {
 </script>
 
 <template>
-    <div class="w-4/5 flex gap-4 border-b border-gray-200 py-8 dark:border-gray-700">
+    <div class="w-2/3 flex gap-4 border-b border-gray-200 py-8 dark:border-gray-700">
         <img
             :src="cart_product.image"
             :alt="cart_product.name"
-            class="h-36 w-36 rounded-xl object-cover md:h-36 md:w-36"
+            class="h-36 w-36 object-cover md:h-36 md:w-36"
         />
 
         <div class="flex flex-1 flex-col justify-between">

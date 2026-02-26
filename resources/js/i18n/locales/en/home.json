@@ -23,5 +23,23 @@
     "product": "Product",
     "new_arrivals": "New Arrivals",
     "add_to_cart": "Add to cart",
-    "quantity": "Quantity"
+    "quantity": "Quantity",
+    "order": "Finish Order",
+    "checkout": "Checkout",
+    "address": {
+        "customer": "Customer Data",
+        "name": "Name",
+        "email": "Email",
+        "phone": "Phone Number",
+        "address": "Address",
+        "zip": "Postal Code",
+        "city": "City",
+        "country": "Country"
+
+    },
+    "total": "Total",
+    "subtotal": "Subtotal",
+    "checkout_description": "Shipping and taxes will be calculated at checkout",
+    "order_error": "Error while ordering",
+    "order_success": "Your order is done successfully. Thank you!"
 }

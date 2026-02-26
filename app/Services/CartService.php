@@ -33,12 +33,21 @@ class CartService
 
     }
 
-    public function addToCart($data){
-        CartProduct::create([
-            'product_id' => $data['product_id'],
-            'user_id' => Auth::id(),
-            'quantity' =>$data['quantity'],
-        ]);
+    public function addToCart($data)
+    {
+        $cartProduct = CartProduct::where('product_id', $data['product_id'])
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if ($cartProduct) {
+            $cartProduct->increment('quantity', $data['quantity']);
+        } else {
+            CartProduct::create([
+                'product_id' => $data['product_id'],
+                'user_id'    => Auth::id(),
+                'quantity'   => $data['quantity'],
+            ]);
+        }
     }
 
     public function updateCart($data,$cartProduct){
@@ -46,4 +55,6 @@ class CartService
             'quantity' => $data['quantity'],
         ]);
     }
+
+
 }
