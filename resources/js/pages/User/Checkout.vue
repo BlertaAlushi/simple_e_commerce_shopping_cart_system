@@ -76,7 +76,7 @@ const order = async () => {
 </script>
 
 <template>
-    <Head :title="t('home.product')" />
+    <Head :title="t('home.checkout')" />
 
     <AppLayout>
         <div v-if="success" class="mt-20 flex justify-center">

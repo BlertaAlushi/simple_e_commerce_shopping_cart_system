@@ -41,5 +41,6 @@
     "subtotal": "Subtotal",
     "checkout_description": "Shipping and taxes will be calculated at checkout",
     "order_error": "Error while ordering",
-    "order_success": "Your order is done successfully. Thank you!"
+    "order_success": "Your order is done successfully. Thank you!",
+    "cart": "Cart"
 }
