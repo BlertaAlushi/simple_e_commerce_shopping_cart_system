@@ -20,7 +20,7 @@ const props = defineProps<{
     products: { data: Product[] };
 }>();
 
-const computedProduts = computed(()=>props.products.data?? [])
+const computedProducts = computed(() => props.products.data);
 
 const columns: ColumnDef<any>[] = [
     { accessorKey: 'id', header: 'ID' },
@@ -38,7 +38,7 @@ const columns: ColumnDef<any>[] = [
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <DataTable
-            :table_rows="computedProduts"
+            :table_rows="computedProducts"
             :columns="columns"
             page_name="products"
         />
