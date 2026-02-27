@@ -42,7 +42,7 @@ const form = useForm<ProductForm>({
     currency: props.product?.currency || 'EUR',
     stock_quantity: props.product?.stock_quantity || 0,
     mark_id: props.product?.mark_id || null,
-    image: props.product?.image || null,
+    image: null,
 
     translations: languages.value.map((lang) => {
         const existing = props.product?.translations?.find(

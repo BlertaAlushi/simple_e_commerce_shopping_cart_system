@@ -33,7 +33,7 @@ class ProductRequest extends FormRequest
             'currency' => 'required|string|max:10',
             'mark_id' => 'required|exists:marks,id',
 
-            'image' => 'required|file|image|mimes:jpeg,png,jpg|max:2048',
+            'image' => 'nullable|file|image|mimes:jpeg,png,jpg|max:2048',
 
             'translations' => 'required|array',
             'translations.*.language_id' => 'required|exists:languages,id',

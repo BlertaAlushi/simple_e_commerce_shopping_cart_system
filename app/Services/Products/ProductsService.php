@@ -20,7 +20,7 @@ class ProductsService extends LookupBaseService implements LookupInterface
     }
 
     public function store($data){
-        $product = $this->model::create([
+        $create = [
             'name' => $data['name'],
             'slug' => $data['slug'] ?? Str::slug($data['name']),
             'description' => $data['description'],
@@ -28,8 +28,11 @@ class ProductsService extends LookupBaseService implements LookupInterface
             'price' => $data['price'],
             'currency' => $data['currency'],
             'mark_id' => $data['mark_id'],
-            'image' => $data['image'],
-        ]);
+        ];
+        if(!empty($data['image'])){
+            $create['image'] = $data['image'];
+        }
+        $product = $this->model::create($create);
 
         foreach ($data['translations'] as $translation) {
             $product->translations()->create([

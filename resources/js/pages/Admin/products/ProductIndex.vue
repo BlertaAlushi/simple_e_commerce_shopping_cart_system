@@ -8,6 +8,7 @@ import { route } from 'ziggy-js';
 import { ColumnDef } from '@tanstack/vue-table';
 
 import DataTable from '@/components/DataTable.vue';
+import { computed } from 'vue';
 
 const { t } = useI18n();
 
@@ -15,9 +16,11 @@ const breadcrumbs: BreadcrumbItem[] = [
     { title: t('home.products'), href: route('admin.products.index') },
 ];
 
-defineProps<{
+const props = defineProps<{
     products: { data: Product[] };
 }>();
+
+const computedProduts = computed(()=>props.products.data?? [])
 
 const columns: ColumnDef<any>[] = [
     { accessorKey: 'id', header: 'ID' },
@@ -35,7 +38,7 @@ const columns: ColumnDef<any>[] = [
 
     <AppLayout :breadcrumbs="breadcrumbs">
         <DataTable
-            :table_rows="products.data"
+            :table_rows="computedProduts"
             :columns="columns"
             page_name="products"
         />
